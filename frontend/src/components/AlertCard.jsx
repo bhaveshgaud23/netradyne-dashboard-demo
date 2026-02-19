@@ -5,8 +5,23 @@ const AlertCard = ({ alert, onClick }) => {
     ? `${alert.driver.firstName} ${alert.driver.lastName}`
     : "Unknown Driver";
 
-  const formatTime = (timestamp) =>
-    timestamp ? new Date(timestamp).toLocaleTimeString() : "--";
+  const formatDate = (timestamp) => {
+    if (!timestamp) return "--";
+    return new Date(timestamp).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const formatTime = (timestamp) => {
+    if (!timestamp) return "--";
+    return new Date(timestamp).toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };
 
   const getSeverityClass = (severity) => {
     switch (severity) {
@@ -43,7 +58,10 @@ const AlertCard = ({ alert, onClick }) => {
       {/* RIGHT SIDE */}
       <div className="right">
         <p className="driver">{driverName}</p>
-        <p className="time">{formatTime(alert.timestamp)}</p>
+        <div className="date-time">
+          <span className="date">{formatDate(alert.timestamp)}</span>
+          <span className="time">{formatTime(alert.timestamp)}</span>
+        </div>
       </div>
     </div>
   );

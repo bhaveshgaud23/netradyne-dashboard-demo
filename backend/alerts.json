@@ -266,5 +266,451 @@
     "camera": { "id": "CAM10006" },
     "timestamp": 1708608046000,
     "status": "PENDING_REVIEW"
+  },
+  {
+    "gpsData": [
+      { "latitude": 28.7041, "timestamp": 1708608046000, "longitude": 77.1025 }
+    ],
+    "videos": [
+      { "id": 200041, "position": 1, "status": 1, "timestamp": 1708607989000 }
+    ],
+    "updatedOn": 1708608341000,
+    "vehicle": { "vehicleNumber": "DL05AB1234", "vin": "2HGCM82633A777777" },
+    "webhookType": "alert",
+    "duration": 12,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Rohit",
+      "lastName": "Sharma",
+      "driverId": "DR1010"
+    },
+    "details": {
+      "severity": 2,
+      "confidence": 0.89,
+      "cause": 2,
+      "typeId": 7,
+      "typeDescription": "HARSH BRAKING",
+      "alertVideoStatus": 2,
+      "severityDescription": "MODERATE",
+      "category": 2,
+      "subTypeDescription": "Sudden Brake Event",
+      "categoryDescription": "Driving Behavior",
+      "weatherPrediction": "Clear",
+      "location": {
+        "address": "Connaught Place",
+        "city": "New Delhi",
+        "country": "India",
+        "postalCode": "110001",
+        "state": "Delhi"
+      },
+      "maxGForce": 3.2,
+      "maxVehicleSpeed": 72.4,
+      "pointOfImpact": "Front"
+    },
+    "id": 106,
+    "camera": { "id": "CAM10006" },
+    "timestamp": 1708608046000,
+    "status": "PENDING_REVIEW"
+  },
+  {
+    "gpsData": [
+      { "latitude": 19.076, "timestamp": 1708611046000, "longitude": 72.8777 }
+    ],
+    "videos": [
+      { "id": 200042, "position": 1, "status": 1, "timestamp": 1708610989000 }
+    ],
+    "updatedOn": 1708611341000,
+    "vehicle": { "vehicleNumber": "MH12CD5678", "vin": "2HGCM82633A888888" },
+    "webhookType": "alert",
+    "duration": 18,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Ankit",
+      "lastName": "Verma",
+      "driverId": "DR1011"
+    },
+    "details": {
+      "severity": 3,
+      "confidence": 0.96,
+      "cause": 1,
+      "typeId": 4,
+      "typeDescription": "HIGH-G",
+      "alertVideoStatus": 2,
+      "severityDescription": "CRITICAL",
+      "category": 1,
+      "subTypeDescription": "Major Impact",
+      "categoryDescription": "Collision Alert",
+      "weatherPrediction": "Rainy",
+      "location": {
+        "address": "Bandra",
+        "city": "Mumbai",
+        "country": "India",
+        "postalCode": "400050",
+        "state": "Maharashtra"
+      },
+      "maxGForce": 5.8,
+      "maxVehicleSpeed": 91.3,
+      "pointOfImpact": "Front-Right"
+    },
+    "id": 107,
+    "camera": { "id": "CAM10007" },
+    "timestamp": 1708611046000,
+    "status": "CONFIRMED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 13.0827, "timestamp": 1708614046000, "longitude": 80.2707 }
+    ],
+    "videos": [
+      { "id": 200043, "position": 1, "status": 1, "timestamp": 1708613989000 }
+    ],
+    "updatedOn": 1708614341000,
+    "vehicle": { "vehicleNumber": "TN10JK4567", "vin": "2HGCM82633A999999" },
+    "webhookType": "alert",
+    "duration": 9,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Karthik",
+      "lastName": "Iyer",
+      "driverId": "DR1012"
+    },
+    "details": {
+      "severity": 1,
+      "confidence": 0.75,
+      "cause": 3,
+      "typeId": 9,
+      "typeDescription": "DISTRACTED DRIVING",
+      "alertVideoStatus": 2,
+      "severityDescription": "WARN",
+      "category": 3,
+      "subTypeDescription": "Mobile Usage",
+      "categoryDescription": "Driver Monitoring",
+      "weatherPrediction": "Cloudy",
+      "location": {
+        "address": "T Nagar",
+        "city": "Chennai",
+        "country": "India",
+        "postalCode": "600017",
+        "state": "Tamil Nadu"
+      },
+      "maxGForce": 1.8,
+      "maxVehicleSpeed": 54.2,
+      "pointOfImpact": "N/A"
+    },
+    "id": 108,
+    "camera": { "id": "CAM10008" },
+    "timestamp": 1708614046000,
+    "status": "OPEN"
+  },
+  {
+    "gpsData": [
+      { "latitude": 12.9716, "timestamp": 1708617046000, "longitude": 77.5946 }
+    ],
+    "videos": [
+      { "id": 200044, "position": 1, "status": 1, "timestamp": 1708616989000 }
+    ],
+    "updatedOn": 1708617341000,
+    "vehicle": { "vehicleNumber": "KA03MN7890", "vin": "2HGCM82633A101010" },
+    "webhookType": "alert",
+    "duration": 15,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Sandeep",
+      "lastName": "Rao",
+      "driverId": "DR1013"
+    },
+    "details": {
+      "severity": 2,
+      "confidence": 0.82,
+      "cause": 4,
+      "typeId": 11,
+      "typeDescription": "OVER SPEEDING",
+      "alertVideoStatus": 2,
+      "severityDescription": "MODERATE",
+      "category": 4,
+      "subTypeDescription": "Speed Limit Exceeded",
+      "categoryDescription": "Speed Compliance",
+      "weatherPrediction": "Clear",
+      "location": {
+        "address": "MG Road",
+        "city": "Bengaluru",
+        "country": "India",
+        "postalCode": "560001",
+        "state": "Karnataka"
+      },
+      "maxGForce": 2.5,
+      "maxVehicleSpeed": 108.6,
+      "pointOfImpact": "N/A"
+    },
+    "id": 109,
+    "camera": { "id": "CAM10009" },
+    "timestamp": 1708617046000,
+    "status": "CONFIRMED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 22.5726, "timestamp": 1708620046000, "longitude": 88.3639 }
+    ],
+    "videos": [
+      { "id": 200045, "position": 1, "status": 1, "timestamp": 1708619989000 }
+    ],
+    "updatedOn": 1708620341000,
+    "vehicle": { "vehicleNumber": "WB02PQ1234", "vin": "2HGCM82633A202020" },
+    "webhookType": "alert",
+    "duration": 20,
+    "tenantName": "NETRADYNE",
+    "driver": { "firstName": "Arjun", "lastName": "Das", "driverId": "DR1014" },
+    "details": {
+      "severity": 3,
+      "confidence": 0.97,
+      "cause": 5,
+      "typeId": 12,
+      "typeDescription": "COLLISION WARNING",
+      "alertVideoStatus": 2,
+      "severityDescription": "CRITICAL",
+      "category": 1,
+      "subTypeDescription": "Rear Impact",
+      "categoryDescription": "Collision Alert",
+      "weatherPrediction": "Stormy",
+      "location": {
+        "address": "Park Street",
+        "city": "Kolkata",
+        "country": "India",
+        "postalCode": "700016",
+        "state": "West Bengal"
+      },
+      "maxGForce": 6.3,
+      "maxVehicleSpeed": 88.1,
+      "pointOfImpact": "Rear"
+    },
+    "id": 110,
+    "camera": { "id": "CAM10010" },
+    "timestamp": 1708620046000,
+    "status": "CONFIRMED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 17.385, "timestamp": 1708623046000, "longitude": 78.4867 }
+    ],
+    "videos": [
+      { "id": 200046, "position": 1, "status": 1, "timestamp": 1708622989000 }
+    ],
+    "updatedOn": 1708623341000,
+    "vehicle": { "vehicleNumber": "TS09GH2345", "vin": "2HGCM82633A303030" },
+    "webhookType": "alert",
+    "duration": 14,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Vikram",
+      "lastName": "Reddy",
+      "driverId": "DR1015"
+    },
+    "details": {
+      "severity": 1,
+      "confidence": 0.78,
+      "cause": 6,
+      "typeId": 14,
+      "typeDescription": "LANE DEPARTURE",
+      "alertVideoStatus": 2,
+      "severityDescription": "WARN",
+      "category": 5,
+      "subTypeDescription": "Unsignaled Lane Change",
+      "categoryDescription": "Lane Compliance",
+      "weatherPrediction": "Clear",
+      "location": {
+        "address": "Banjara Hills",
+        "city": "Hyderabad",
+        "country": "India",
+        "postalCode": "500034",
+        "state": "Telangana"
+      },
+      "maxGForce": 1.4,
+      "maxVehicleSpeed": 64.8,
+      "pointOfImpact": "N/A"
+    },
+    "id": 111,
+    "camera": { "id": "CAM10011" },
+    "timestamp": 1708623046000,
+    "status": "OPEN"
+  },
+  {
+    "gpsData": [
+      { "latitude": 26.9124, "timestamp": 1708626046000, "longitude": 75.7873 }
+    ],
+    "videos": [
+      { "id": 200047, "position": 1, "status": 1, "timestamp": 1708625989000 }
+    ],
+    "updatedOn": 1708626341000,
+    "vehicle": { "vehicleNumber": "RJ14KL5678", "vin": "2HGCM82633A404040" },
+    "webhookType": "alert",
+    "duration": 10,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Manish",
+      "lastName": "Singh",
+      "driverId": "DR1016"
+    },
+    "details": {
+      "severity": 2,
+      "confidence": 0.83,
+      "cause": 7,
+      "typeId": 16,
+      "typeDescription": "HARSH ACCELERATION",
+      "alertVideoStatus": 2,
+      "severityDescription": "MODERATE",
+      "category": 2,
+      "subTypeDescription": "Sudden Acceleration",
+      "categoryDescription": "Driving Behavior",
+      "weatherPrediction": "Sunny",
+      "location": {
+        "address": "MI Road",
+        "city": "Jaipur",
+        "country": "India",
+        "postalCode": "302001",
+        "state": "Rajasthan"
+      },
+      "maxGForce": 2.9,
+      "maxVehicleSpeed": 84.3,
+      "pointOfImpact": "N/A"
+    },
+    "id": 112,
+    "camera": { "id": "CAM10012" },
+    "timestamp": 1708626046000,
+    "status": "PENDING_REVIEW"
+  },
+  {
+    "gpsData": [
+      { "latitude": 23.0225, "timestamp": 1708629046000, "longitude": 72.5714 }
+    ],
+    "videos": [
+      { "id": 200048, "position": 1, "status": 1, "timestamp": 1708628989000 }
+    ],
+    "updatedOn": 1708629341000,
+    "vehicle": { "vehicleNumber": "GJ01MN8901", "vin": "2HGCM82633A505050" },
+    "webhookType": "alert",
+    "duration": 16,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Harsh",
+      "lastName": "Patel",
+      "driverId": "DR1017"
+    },
+    "details": {
+      "severity": 3,
+      "confidence": 0.95,
+      "cause": 8,
+      "typeId": 18,
+      "typeDescription": "FORWARD COLLISION WARNING",
+      "alertVideoStatus": 2,
+      "severityDescription": "CRITICAL",
+      "category": 1,
+      "subTypeDescription": "Sudden Obstacle",
+      "categoryDescription": "Collision Alert",
+      "weatherPrediction": "Foggy",
+      "location": {
+        "address": "CG Road",
+        "city": "Ahmedabad",
+        "country": "India",
+        "postalCode": "380009",
+        "state": "Gujarat"
+      },
+      "maxGForce": 5.4,
+      "maxVehicleSpeed": 92.7,
+      "pointOfImpact": "Front"
+    },
+    "id": 113,
+    "camera": { "id": "CAM10013" },
+    "timestamp": 1708629046000,
+    "status": "CONFIRMED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 30.7333, "timestamp": 1708632046000, "longitude": 76.7794 }
+    ],
+    "videos": [
+      { "id": 200049, "position": 1, "status": 1, "timestamp": 1708631989000 }
+    ],
+    "updatedOn": 1708632341000,
+    "vehicle": { "vehicleNumber": "PB65XY2345", "vin": "2HGCM82633A606060" },
+    "webhookType": "alert",
+    "duration": 8,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Gurpreet",
+      "lastName": "Singh",
+      "driverId": "DR1018"
+    },
+    "details": {
+      "severity": 1,
+      "confidence": 0.72,
+      "cause": 9,
+      "typeId": 19,
+      "typeDescription": "SEATBELT VIOLATION",
+      "alertVideoStatus": 2,
+      "severityDescription": "INFO",
+      "category": 3,
+      "subTypeDescription": "Seatbelt Not Fastened",
+      "categoryDescription": "Driver Monitoring",
+      "weatherPrediction": "Clear",
+      "location": {
+        "address": "Sector 17",
+        "city": "Chandigarh",
+        "country": "India",
+        "postalCode": "160017",
+        "state": "Punjab"
+      },
+      "maxGForce": 0.9,
+      "maxVehicleSpeed": 48.5,
+      "pointOfImpact": "N/A"
+    },
+    "id": 114,
+    "camera": { "id": "CAM10014" },
+    "timestamp": 1708632046000,
+    "status": "OPEN"
+  },
+  {
+    "gpsData": [
+      { "latitude": 21.1458, "timestamp": 1708635046000, "longitude": 79.0882 }
+    ],
+    "videos": [
+      { "id": 200050, "position": 1, "status": 1, "timestamp": 1708634989000 }
+    ],
+    "updatedOn": 1708635341000,
+    "vehicle": { "vehicleNumber": "MH31CD6789", "vin": "2HGCM82633A707070" },
+    "webhookType": "alert",
+    "duration": 13,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Aditya",
+      "lastName": "Kulkarni",
+      "driverId": "DR1019"
+    },
+    "details": {
+      "severity": 2,
+      "confidence": 0.85,
+      "cause": 10,
+      "typeId": 21,
+      "typeDescription": "TAILGATING",
+      "alertVideoStatus": 2,
+      "severityDescription": "MODERATE",
+      "category": 6,
+      "subTypeDescription": "Unsafe Following Distance",
+      "categoryDescription": "Distance Compliance",
+      "weatherPrediction": "Cloudy",
+      "location": {
+        "address": "Sitabuldi",
+        "city": "Nagpur",
+        "country": "India",
+        "postalCode": "440012",
+        "state": "Maharashtra"
+      },
+      "maxGForce": 2.2,
+      "maxVehicleSpeed": 76.9,
+      "pointOfImpact": "N/A"
+    },
+    "id": 115,
+    "camera": { "id": "CAM10015" },
+    "timestamp": 1708635046000,
+    "status": "PENDING_REVIEW"
   }
 ]
