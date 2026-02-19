@@ -1,46 +1,50 @@
-const AlertCard = ({ alert }) => {
-  const driverName = `${alert.driver.firstName} ${alert.driver.lastName}`;
-  const location = alert.details.location;
+const AlertCard = ({ alert, onClick }) => {
+  if (!alert) return null;
 
-  const formatTime = (timestamp) => new Date(timestamp).toLocaleString();
+  const driverName = alert?.driver
+    ? `${alert.driver.firstName} ${alert.driver.lastName}`
+    : "Unknown Driver";
 
-  const severityClass =
-    alert.details.severityDescription === "CRITICAL" ? "critical" : "medium";
+  const formatTime = (timestamp) =>
+    timestamp ? new Date(timestamp).toLocaleTimeString() : "--";
+
+  const getSeverityClass = (severity) => {
+    switch (severity) {
+      case "CRITICAL":
+        return "critical";
+      case "WARN":
+      case "MODERATE":
+        return "warn";
+      default:
+        return "info";
+    }
+  };
+
+  const severityClass = getSeverityClass(alert?.details?.severityDescription);
 
   return (
-    <div className="card">
-      <h3>{alert.details.typeDescription}</h3>
+    <div
+      className={`card ${severityClass}-border two-column`}
+      onClick={() => onClick(alert)}
+    >
+      {/* LEFT SIDE */}
+      <div className="left">
+        <h4>{alert?.details?.typeDescription || "Alert"}</h4>
 
-      <span className={`badge ${severityClass}`}>
-        {alert.details.severityDescription}
-      </span>
+        <span className={`badge ${severityClass}`}>
+          {alert?.details?.severityDescription || "INFO"}
+        </span>
 
-      <p>
-        <strong>Driver:</strong> {driverName}
-      </p>
-      <p>
-        <strong>Vehicle:</strong> {alert.vehicle.vehicleNumber}
-      </p>
-      <p>
-        <strong>Category:</strong> {alert.details.categoryDescription}
-      </p>
-      <p>
-        <strong>Status:</strong> {alert.status}
-      </p>
+        <p className="category">
+          {alert?.details?.categoryDescription || "General"}
+        </p>
+      </div>
 
-      <p>
-        <strong>Location:</strong> {location.city}, {location.state}
-      </p>
-
-      <p>
-        <strong>Time:</strong> {formatTime(alert.timestamp)}
-      </p>
-
-      <hr />
-
-      <p>Weather: {alert.details.weatherPrediction}</p>
-      <p>Max G: {alert.details.maxGForce}</p>
-      <p>Speed: {alert.details.maxVehicleSpeed} km/h</p>
+      {/* RIGHT SIDE */}
+      <div className="right">
+        <p className="driver">{driverName}</p>
+        <p className="time">{formatTime(alert.timestamp)}</p>
+      </div>
     </div>
   );
 };
