@@ -1,0 +1,270 @@
+[
+  {
+    "gpsData": [
+      { "latitude": 28.6139, "timestamp": 1708503046000, "longitude": 77.209 },
+      { "latitude": 28.6145, "timestamp": 1708503050000, "longitude": 77.2095 }
+    ],
+    "videos": [
+      { "id": 200001, "position": 0, "status": 2, "timestamp": 1708502989000 },
+      { "id": 200002, "position": 1, "status": 1, "timestamp": 1708502989000 }
+    ],
+    "updatedOn": 1708503341000,
+    "vehicle": { "vehicleNumber": "DL01AB1234", "vin": "1HGCM82633A111111" },
+    "webhookType": "alert",
+    "duration": 15,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Rahul",
+      "lastName": "Sharma",
+      "driverId": "DR1001"
+    },
+    "details": {
+      "severity": 3,
+      "confidence": 0.92,
+      "cause": 1,
+      "typeId": 4,
+      "typeDescription": "HIGH-G",
+      "alertVideoStatus": 2,
+      "severityDescription": "CRITICAL",
+      "category": 1,
+      "subTypeDescription": "Severe Impact",
+      "categoryDescription": "Collision Alert",
+      "weatherPrediction": "Rainy",
+      "location": {
+        "address": "Connaught Place",
+        "city": "New Delhi",
+        "country": "India",
+        "postalCode": "110001",
+        "state": "Delhi"
+      },
+      "maxGForce": 4.5,
+      "maxVehicleSpeed": 88.2,
+      "pointOfImpact": "Front"
+    },
+    "id": 101,
+    "camera": { "id": "CAM10001" },
+    "timestamp": 1708503046000,
+    "status": "CONFIRMED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 19.076, "timestamp": 1708504046000, "longitude": 72.8777 }
+    ],
+    "videos": [
+      { "id": 200010, "position": 0, "status": 2, "timestamp": 1708503989000 }
+    ],
+    "updatedOn": 1708504341000,
+    "vehicle": { "vehicleNumber": "MH02XY5678", "vin": "1HGCM82633A222222" },
+    "webhookType": "alert",
+    "duration": 8,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Amit",
+      "lastName": "Verma",
+      "driverId": "DR1002"
+    },
+    "details": {
+      "severity": 2,
+      "confidence": 0.78,
+      "cause": 2,
+      "typeId": 5,
+      "typeDescription": "HARSH-BRAKE",
+      "alertVideoStatus": 1,
+      "severityDescription": "WARN",
+      "category": 2,
+      "subTypeDescription": "Sudden Brake",
+      "categoryDescription": "Driving Behavior",
+      "weatherPrediction": "Clear",
+      "location": {
+        "address": "Bandra West",
+        "city": "Mumbai",
+        "country": "India",
+        "postalCode": "400050",
+        "state": "Maharashtra"
+      },
+      "maxGForce": 2.1,
+      "maxVehicleSpeed": 65.4,
+      "pointOfImpact": "Rear"
+    },
+    "id": 102,
+    "camera": { "id": "CAM10002" },
+    "timestamp": 1708504046000,
+    "status": "PENDING"
+  },
+  {
+    "gpsData": [
+      { "latitude": 12.9716, "timestamp": 1708505046000, "longitude": 77.5946 }
+    ],
+    "videos": [
+      { "id": 200020, "position": 1, "status": 1, "timestamp": 1708504989000 }
+    ],
+    "updatedOn": 1708505341000,
+    "vehicle": { "vehicleNumber": "KA03MN8901", "vin": "1HGCM82633A333333" },
+    "webhookType": "alert",
+    "duration": 20,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Sneha",
+      "lastName": "Reddy",
+      "driverId": "DR1003"
+    },
+    "details": {
+      "severity": 1,
+      "confidence": 0.66,
+      "cause": 3,
+      "typeId": 6,
+      "typeDescription": "OVERSPEED",
+      "alertVideoStatus": 1,
+      "severityDescription": "INFO",
+      "category": 2,
+      "subTypeDescription": "Speed Limit Exceeded",
+      "categoryDescription": "Driving Behavior",
+      "weatherPrediction": "Cloudy",
+      "location": {
+        "address": "MG Road",
+        "city": "Bengaluru",
+        "country": "India",
+        "postalCode": "560001",
+        "state": "Karnataka"
+      },
+      "maxGForce": 1.2,
+      "maxVehicleSpeed": 102.7,
+      "pointOfImpact": "N/A"
+    },
+    "id": 103,
+    "camera": { "id": "CAM10003" },
+    "timestamp": 1708505046000,
+    "status": "CONFIRMED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 22.5726, "timestamp": 1708506046000, "longitude": 88.3639 }
+    ],
+    "videos": [
+      { "id": 200030, "position": 2, "status": 1, "timestamp": 1708505989000 }
+    ],
+    "updatedOn": 1708506341000,
+    "vehicle": { "vehicleNumber": "WB04GH2345", "vin": "1HGCM82633A444444" },
+    "webhookType": "alert",
+    "duration": 10,
+    "tenantName": "NETRADYNE",
+    "driver": { "firstName": "Arjun", "lastName": "Das", "driverId": "DR1004" },
+    "details": {
+      "severity": 2,
+      "confidence": 0.81,
+      "cause": 4,
+      "typeId": 7,
+      "typeDescription": "LANE-DEPARTURE",
+      "alertVideoStatus": 2,
+      "severityDescription": "WARN",
+      "category": 3,
+      "subTypeDescription": "Left Lane Exit",
+      "categoryDescription": "Safety Alert",
+      "weatherPrediction": "Foggy",
+      "location": {
+        "address": "Salt Lake Sector V",
+        "city": "Kolkata",
+        "country": "India",
+        "postalCode": "700091",
+        "state": "West Bengal"
+      },
+      "maxGForce": 1.9,
+      "maxVehicleSpeed": 74.0,
+      "pointOfImpact": "Side"
+    },
+    "id": 104,
+    "camera": { "id": "CAM10004" },
+    "timestamp": 1708506046000,
+    "status": "REVIEWED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 13.0827, "timestamp": 1708507046000, "longitude": 80.2707 }
+    ],
+    "videos": [
+      { "id": 200040, "position": 1, "status": 1, "timestamp": 1708506989000 }
+    ],
+    "updatedOn": 1708507341000,
+    "vehicle": { "vehicleNumber": "TN10JK4567", "vin": "1HGCM82633A555555" },
+    "webhookType": "alert",
+    "duration": 18,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Karthik",
+      "lastName": "Iyer",
+      "driverId": "DR1005"
+    },
+    "details": {
+      "severity": 3,
+      "confidence": 0.95,
+      "cause": 1,
+      "typeId": 4,
+      "typeDescription": "HIGH-G",
+      "alertVideoStatus": 2,
+      "severityDescription": "CRITICAL",
+      "category": 1,
+      "subTypeDescription": "Major Impact",
+      "categoryDescription": "Collision Alert",
+      "weatherPrediction": "Stormy",
+      "location": {
+        "address": "T Nagar",
+        "city": "Chennai",
+        "country": "India",
+        "postalCode": "600017",
+        "state": "Tamil Nadu"
+      },
+      "maxGForce": 5.1,
+      "maxVehicleSpeed": 91.6,
+      "pointOfImpact": "Front-Right"
+    },
+    "id": 105,
+    "camera": { "id": "CAM10005" },
+    "timestamp": 1708507046000,
+    "status": "CONFIRMED"
+  },
+  {
+    "gpsData": [
+      { "latitude": 28.7041, "timestamp": 1708608046000, "longitude": 77.1025 }
+    ],
+    "videos": [
+      { "id": 200041, "position": 1, "status": 1, "timestamp": 1708607989000 }
+    ],
+    "updatedOn": 1708608341000,
+    "vehicle": { "vehicleNumber": "DL05AB1234", "vin": "2HGCM82633A777777" },
+    "webhookType": "alert",
+    "duration": 12,
+    "tenantName": "NETRADYNE",
+    "driver": {
+      "firstName": "Rohit",
+      "lastName": "Sharma",
+      "driverId": "DR1010"
+    },
+    "details": {
+      "severity": 2,
+      "confidence": 0.89,
+      "cause": 2,
+      "typeId": 7,
+      "typeDescription": "HARSH BRAKING",
+      "alertVideoStatus": 2,
+      "severityDescription": "MODERATE",
+      "category": 2,
+      "subTypeDescription": "Sudden Brake Event",
+      "categoryDescription": "Driving Behavior",
+      "weatherPrediction": "Clear",
+      "location": {
+        "address": "Connaught Place",
+        "city": "New Delhi",
+        "country": "India",
+        "postalCode": "110001",
+        "state": "Delhi"
+      },
+      "maxGForce": 3.2,
+      "maxVehicleSpeed": 72.4,
+      "pointOfImpact": "Front"
+    },
+    "id": 106,
+    "camera": { "id": "CAM10006" },
+    "timestamp": 1708608046000,
+    "status": "PENDING_REVIEW"
+  }
+]
