@@ -1,0 +1,43 @@
+.dashboard-metrics {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.metric-box {
+  flex: 1;
+  min-width: 180px;
+  padding: 20px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.metric-box h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.metric-box p {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Color coding */
+.total {
+  border-left: 6px solid #333;
+}
+.critical {
+  border-left: 6px solid #e53935;
+}
+.moderate {
+  border-left: 6px solid #fb8c00;
+}
+.warn {
+  border-left: 6px solid #fdd835;
+}
+.info {
+  border-left: 6px solid #42a5f5;
+}
