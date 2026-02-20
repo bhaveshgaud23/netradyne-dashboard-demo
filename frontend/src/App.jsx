@@ -18,14 +18,9 @@ function App() {
 
   // Fetch alerts safely
   const fetchAlerts = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/alerts");
-      if (!res.ok) throw new Error("Failed to fetch alerts");
-      const data = await res.json();
-      setAlerts(data);
-    } catch (error) {
-      console.error("Error fetching alerts:", error);
-    }
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`);
+    const data = await res.json();
+    setAlerts(data);
   };
 
   useEffect(() => {
@@ -149,7 +144,7 @@ function App() {
               <div className="grid">
                 {filteredAlerts.map((alert) => (
                   <AlertCard
-                    key={alert.id}
+                    key={alert._id}
                     alert={alert}
                     onClick={setSelectedAlert}
                   />
