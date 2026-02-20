@@ -22,7 +22,64 @@ const lastNames = [
   "Kulkarni",
 ];
 
-const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const locations = [
+  // -------- Maharashtra --------
+  {
+    state: "Maharashtra",
+    city: "Mumbai",
+    address: "Bandra Kurla Complex",
+    postalCode: "400051",
+    latitudeBase: 19.076,
+    longitudeBase: 72.8777,
+  },
+  {
+    state: "Maharashtra",
+    city: "Pune",
+    address: "Hinjewadi IT Park",
+    postalCode: "411057",
+    latitudeBase: 18.5204,
+    longitudeBase: 73.8567,
+  },
+  {
+    state: "Maharashtra",
+    city: "Nagpur",
+    address: "Sitabuldi",
+    postalCode: "440012",
+    latitudeBase: 21.1458,
+    longitudeBase: 79.0882,
+  },
+
+  // -------- Madhya Pradesh --------
+  {
+    state: "Madhya Pradesh",
+    city: "Indore",
+    address: "Vijay Nagar",
+    postalCode: "452010",
+    latitudeBase: 22.7196,
+    longitudeBase: 75.8577,
+  },
+  {
+    state: "Madhya Pradesh",
+    city: "Bhopal",
+    address: "MP Nagar",
+    postalCode: "462011",
+    latitudeBase: 23.2599,
+    longitudeBase: 77.4126,
+  },
+  {
+    state: "Madhya Pradesh",
+    city: "Jabalpur",
+    address: "Napier Town",
+    postalCode: "482001",
+    latitudeBase: 23.1815,
+    longitudeBase: 79.9864,
+  },
+];
+
+// const randomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const randomItem = (arr) => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
 const randomNumber = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -217,11 +274,16 @@ const generateRandomAlert = (monthsBack = 0) => {
   const alertMeta = alertDefinitions[type];
   const metrics = generateMetrics(type);
 
+  const selectedLocation = randomItem(locations);
+  const latitude = selectedLocation.latitudeBase + (Math.random() - 0.5) * 0.02;
+  const longitude =
+    selectedLocation.longitudeBase + (Math.random() - 0.5) * 0.02;
+
   return {
     gpsData: [
       {
-        latitude: 28.6 + Math.random(),
-        longitude: 77.2 + Math.random(),
+        latitude,
+        longitude,
         timestamp: randomTimestamp,
       },
     ],
@@ -259,11 +321,11 @@ const generateRandomAlert = (monthsBack = 0) => {
       categoryDescription: alertMeta.category,
       weatherPrediction: randomItem(["Clear", "Rainy", "Foggy", "Sunny"]),
       location: {
-        address: "Connaught Place",
-        city: "New Delhi",
+        address: selectedLocation.address,
+        city: selectedLocation.city,
         country: "India",
-        postalCode: "110001",
-        state: "Delhi",
+        postalCode: selectedLocation.postalCode,
+        state: selectedLocation.state,
       },
       maxGForce: metrics.maxGForce,
       maxVehicleSpeed: metrics.maxVehicleSpeed,

@@ -6,6 +6,10 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const Alert = require("./models/Alert");
+const alertSchema = new mongoose.Schema({}, { strict: false });
+const generateRandomAlert = require("./utils/generateAlert");
+
 app.use(cors());
 app.use(express.json());
 
@@ -16,8 +20,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // 🔹 Flexible schema (since alerts have nested structure)
-const alertSchema = new mongoose.Schema({}, { strict: false });
-const Alert = mongoose.model("Alert", alertSchema);
+// const Alert = mongoose.model("Alert", alertSchema);
 
 // 🔹 API to fetch alerts
 app.get("/alerts", async (req, res) => {
@@ -26,6 +29,28 @@ app.get("/alerts", async (req, res) => {
     res.json(alerts);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch alerts" });
+  }
+});
+
+app.post("/generate-alerts", async (req, res) => {
+  try {
+    const count = parseInt(req.body.count) || 1;
+    const monthsBack = parseInt(req.body.monthsBack) || 0;
+
+    const alerts = [];
+
+    for (let i = 0; i < count; i++) {
+      alerts.push(generateRandomAlert(monthsBack));
+    }
+
+    await Alert.insertMany(alerts);
+
+    res.json({
+      message: `${count} alerts generated within last ${monthsBack} month(s)`,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to generate alerts" });
   }
 });
 
