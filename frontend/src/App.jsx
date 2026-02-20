@@ -15,7 +15,7 @@ function App() {
 
   // Fetch alerts
   const fetchAlerts = async () => {
-    const res = await fetch("http://localhost:5000/alerts");
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`);
     const data = await res.json();
     setAlerts(data);
   };
@@ -122,7 +122,7 @@ function App() {
           <div className="grid">
             {filteredAlerts.map((alert) => (
               <AlertCard
-                key={alert.id}
+                key={alert._id}
                 alert={alert}
                 onClick={setSelectedAlert}
               />
