@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [alerts, setAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
 
-  // View state (IMPORTANT)
+  // View state
   const [activeView, setActiveView] = useState("ALERTS");
 
   // Filters
@@ -54,15 +55,14 @@ function App() {
         alert.details?.categoryDescription === categoryFilter;
 
       const typeMatch =
-        typeFilter === "ALL" ||
-        alert.details?.typeDescription === typeFilter;
+        typeFilter === "ALL" || alert.details?.typeDescription === typeFilter;
 
       return severityMatch && categoryMatch && typeMatch;
     })
     .sort((a, b) =>
       sortOrder === "NEWEST"
         ? b.timestamp - a.timestamp
-        : a.timestamp - b.timestamp
+        : a.timestamp - b.timestamp,
     );
 
   return (
@@ -70,12 +70,11 @@ function App() {
       <div className="dashboard">
         {/* Sidebar */}
         <div className="sidebar">
-          <h2>Netradyne</h2>
+          <h2>Allied Globetech</h2>
 
-          {/* Navigation Buttons */}
+          {/* Navigation */}
           <div className="nav-buttons">
-
-          <button
+            <button
               className={activeView === "DASHBOARD" ? "active" : ""}
               onClick={() => setActiveView("DASHBOARD")}
             >
@@ -86,13 +85,11 @@ function App() {
               className={activeView === "ALERTS" ? "active" : ""}
               onClick={() => setActiveView("ALERTS")}
             >
-             Show Overall Alerts
+              Alerts
             </button>
-
-            
           </div>
 
-          {/* Filters (Only for Alerts View) */}
+          {/* Filters only for Alerts */}
           {activeView === "ALERTS" && (
             <div className="filters">
               <h3>Filters</h3>

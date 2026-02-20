@@ -183,7 +183,6 @@ body {
   color: #999;
 }
 
-
 .nav-buttons {
   margin-bottom: 20px;
 }
@@ -200,7 +199,6 @@ body {
   background: rgb(48, 29, 29);
   color: rgb(243, 29, 29);
 }
-
 
 .dashboard-cards {
   display: grid;
@@ -219,7 +217,9 @@ body {
   flex-direction: column;
   justify-content: center;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .stat-card h4 {
