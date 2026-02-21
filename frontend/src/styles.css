@@ -1,20 +1,126 @@
+/* Global Reset */
 body {
   margin: 0;
-  font-family: "Inter", Arial, sans-serif;
-  background: #eef2f7; /* Softer cool gray */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
 }
 
+/* Layout */
 .dashboard {
   display: flex;
+  height: 100vh;
 }
 
+/* ================= Sidebar ================= */
 .sidebar {
-  width: 220px;
-  background: #1f2937;
-  color: white;
+  width: 260px;
+  background: #ffffff;
   padding: 20px;
-  min-height: 100vh;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08); /* Shadow Added */
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e2e8f0;
 }
+
+.sidebar h2 {
+  color: #1e3a8a;
+  margin-bottom: 30px;
+}
+
+/* Navigation Buttons */
+.nav-buttons button {
+  border: 1px solid black;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 8px;
+  /* background-color: #eff6ff;
+  color: #1e3a8a; */
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-buttons button:hover {
+  background-color: #2563eb;
+  color: white;
+  transform: translateX(3px);
+}
+
+.nav-buttons .active {
+  background-color: #1e3a8a;
+  color: white;
+}
+
+/* ================= Filters ================= */
+.filters {
+  /* margin-top: 20px; */
+}
+
+.filters h3 {
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+.filters label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 10px;
+  display: block;
+}
+
+.filters select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background-color: #f0f0f0;
+  transition: border 0.2s;
+}
+
+.filters select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+/* ================= Content ================= */
+.content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.content h2 {
+  color: #1e3a8a;
+}
+
+/* ================= Alert Grid ================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* ================= Alert Card Enhancement ================= */
+/* Add this inside AlertCard CSS */
+.alert-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.alert-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+}
+
 
 .content {
   flex: 1;
@@ -147,7 +253,7 @@ body {
 }
 
 .filters {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -162,7 +268,6 @@ body {
 .filters select {
   padding: 6px;
   border-radius: 6px;
-  border: none;
   outline: none;
 }
 
@@ -185,7 +290,7 @@ body {
 
 
 .nav-buttons {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .nav-buttons button {
@@ -197,8 +302,8 @@ body {
 }
 
 .nav-buttons button.active {
-  background: rgb(48, 29, 29);
-  color: rgb(243, 29, 29);
+  /* background: rgb(48, 29, 29);
+  color: rgb(243, 29, 29); */
 }
 
 
