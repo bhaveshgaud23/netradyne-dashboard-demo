@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
+import { io } from "socket.io-client";
 import "leaflet/dist/leaflet.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const [typeFilter, setTypeFilter] = useState("ALL");
   const [sortOrder, setSortOrder] = useState("NEWEST");
+  const [liveAlert, setLiveAlert] = useState(null);
 
   // Fetch alerts safely
   const fetchAlerts = async () => {
@@ -26,8 +28,22 @@ function App() {
 
   useEffect(() => {
     fetchAlerts();
-    const interval = setInterval(fetchAlerts, 5000);
-    return () => clearInterval(interval);
+
+    const socket = io(import.meta.env.VITE_API_URL);
+
+    socket.on("connect", () => {
+      console.log("Connected to socket server");
+    });
+
+    socket.on("new-alert", (alert) => {
+      console.log("New alert received:", alert);
+      setAlerts(prev => [alert, ...prev]);
+      setLiveAlert(alert);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   // Dynamic filter values
@@ -163,7 +179,22 @@ function App() {
       <AlertModal
         alert={selectedAlert}
         onClose={() => setSelectedAlert(null)}
+        isNew={liveAlert?._id === alert._id}
       />
+      {/* Live Alert Popup */}
+      {liveAlert && liveAlert.details?.severityDescription === "CRITICAL" && (
+        <div className="live-popup">
+          <div className="popup-content">
+            <h3>🚨 New Alert Received!</h3>
+
+            <p><strong>Type:</strong> {liveAlert.details?.typeDescription}</p>
+            <p><strong>Driver:</strong> {liveAlert.driver?.firstName} {liveAlert.driver?.lastName}</p>
+            <p><strong>Severity:</strong> {liveAlert.details?.severityDescription}</p>
+
+            <button onClick={() => setLiveAlert(null)}>Close</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
