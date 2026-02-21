@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [alerts, setAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
 
   // View state (IMPORTANT)
-  const [activeView, setActiveView] = useState("ALERTS");
+  const [activeView, setActiveView] = useState("DASHBOARD");
 
   // Filters
   const [severityFilter, setSeverityFilter] = useState("ALL");
