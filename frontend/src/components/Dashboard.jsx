@@ -13,7 +13,6 @@ function Dashboard({ alerts }) {
   return (
     <>
       <div className="dashboard-stats">
-        {/* <h3>Dashboard</h3> */}
 
         <div className="dashboard-cards">
           <div className="stat-card total">
@@ -39,6 +38,7 @@ function Dashboard({ alerts }) {
       </div>
       <h2>Fleets on Map</h2>
       <MapView alerts={alerts} />
+
     </>
   );
 }

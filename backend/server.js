@@ -2,8 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
 const PORT = process.env.PORT || 5000;
 
 const Alert = require("./models/Alert");
@@ -40,21 +48,30 @@ app.post("/generate-alerts", async (req, res) => {
     const alerts = [];
 
     for (let i = 0; i < count; i++) {
-      alerts.push(generateRandomAlert(monthsBack));
+      const newAlert = generateRandomAlert(monthsBack);
+      alerts.push(newAlert);
     }
 
-    await Alert.insertMany(alerts);
+    const insertedAlerts = await Alert.insertMany(alerts);
+
+    // 🔥 Emit real-time event
+    insertedAlerts.forEach(alert => {
+      io.emit("new-alert", alert);
+    });
 
     res.json({
-      message: `${count} alerts generated within last ${monthsBack} month(s)`,
+      message: `${count} alerts generated`,
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Failed to generate alerts" });
   }
 });
 
 // 🔹 Start server
-app.listen(PORT, () => {
+// app.listen(PORT, () => {
+//   console.log(`Server running on http://localhost:${PORT}`);
+// });
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+

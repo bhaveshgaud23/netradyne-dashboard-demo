@@ -1,4 +1,4 @@
-const AlertCard = ({ alert, onClick }) => {
+const AlertCard = ({ alert, onClick, isNew }) => {
   if (!alert) return null;
 
   const driverName = alert?.driver
@@ -39,7 +39,8 @@ const AlertCard = ({ alert, onClick }) => {
 
   return (
     <div
-      className={`card ${severityClass}-border two-column`}
+      className={`card ${severityClass}-border two-column ${isNew ? "new-alert-card" : ""
+        }`}
       onClick={() => onClick(alert)}
     >
       {/* LEFT SIDE */}
