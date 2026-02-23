@@ -1,3 +1,4 @@
+// ✅ 1️⃣ IMPORTS (TOP OF FILE)
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -40,10 +41,20 @@ const getSeverityIcon = (severity) => {
 // ✅ 4️⃣ MAP COMPONENT
 
 const MapView = ({ alerts }) => {
+  // 🇮🇳 India bounding box
+  const indiaBounds = [
+    [6.4627, 68.1097], // Southwest
+    [35.5133, 97.3956], // Northeast
+  ];
+
   return (
     <MapContainer
-      center={[22.9734, 78.6569]} // India center
+      center={[22.9734, 78.6569]} // Center of India
       zoom={5}
+      minZoom={5} // Prevent zooming out too much
+      maxZoom={12}
+      maxBounds={indiaBounds} // Restrict map to India
+      maxBoundsViscosity={1.0} // Lock dragging outside India
       style={{ height: "500px", width: "100%", marginTop: "20px" }}
     >
       <TileLayer

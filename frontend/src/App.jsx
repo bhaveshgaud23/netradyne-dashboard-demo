@@ -8,8 +8,8 @@ function App() {
   const [alerts, setAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
 
-  // View state
-  const [activeView, setActiveView] = useState("ALERTS");
+  // View state (IMPORTANT)
+  const [activeView, setActiveView] = useState("DASHBOARD");
 
   // Filters
   const [severityFilter, setSeverityFilter] = useState("ALL");
@@ -19,9 +19,14 @@ function App() {
 
   // Fetch alerts safely
   const fetchAlerts = async () => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`);
-    const data = await res.json();
-    setAlerts(data);
+    try {
+      const res = await fetch("http://localhost:5000/alerts");
+      if (!res.ok) throw new Error("Failed to fetch alerts");
+      const data = await res.json();
+      setAlerts(data);
+    } catch (error) {
+      console.error("Error fetching alerts:", error);
+    }
   };
 
   useEffect(() => {
@@ -70,9 +75,9 @@ function App() {
       <div className="dashboard">
         {/* Sidebar */}
         <div className="sidebar">
-          <h2>Allied Globetech</h2>
+          <h2>AlliedGlobetech LLP</h2>
 
-          {/* Navigation */}
+          {/* Navigation Buttons */}
           <div className="nav-buttons">
             <button
               className={activeView === "DASHBOARD" ? "active" : ""}
@@ -85,11 +90,11 @@ function App() {
               className={activeView === "ALERTS" ? "active" : ""}
               onClick={() => setActiveView("ALERTS")}
             >
-              Alerts
+              Show Overall Alerts
             </button>
           </div>
 
-          {/* Filters only for Alerts */}
+          {/* Filters (Only for Alerts View) */}
           {activeView === "ALERTS" && (
             <div className="filters">
               <h3>Filters</h3>
@@ -141,7 +146,7 @@ function App() {
               <div className="grid">
                 {filteredAlerts.map((alert) => (
                   <AlertCard
-                    key={alert._id}
+                    key={alert.id}
                     alert={alert}
                     onClick={setSelectedAlert}
                   />

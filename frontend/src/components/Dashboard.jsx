@@ -1,4 +1,6 @@
 import MapView from "./MapView";
+import SeverityBarChart from "./SeverityBarChart";
+import SpeedLineChart from "./SpeedLineChart";
 
 function Dashboard({ alerts }) {
   const total = alerts.length;
@@ -37,6 +39,13 @@ function Dashboard({ alerts }) {
           </div>
         </div>
       </div>
+
+      {/* Charts Section */}
+      <div className="charts-container">
+        <SeverityBarChart alerts={alerts} />
+        <SpeedLineChart alerts={alerts} />
+      </div>
+
       <h2>Fleets on Map</h2>
       <MapView alerts={alerts} />
     </>
