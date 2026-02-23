@@ -22,6 +22,19 @@ const lastNames = [
   "Kulkarni",
 ];
 
+const fleetVehicles = [
+  { vehicleNumber: "MH12AB1234", vin: "VIN100001" },
+  { vehicleNumber: "MH14CD5678", vin: "VIN100002" },
+  { vehicleNumber: "MH20EF9012", vin: "VIN100003" },
+  // { vehicleNumber: "MP09GH3456", vin: "VIN100004" },
+  // { vehicleNumber: "MP04IJ7890", vin: "VIN100005" },
+  // { vehicleNumber: "MH31KL2468", vin: "VIN100006" },
+  // { vehicleNumber: "MP20MN1357", vin: "VIN100007" },
+  // { vehicleNumber: "MH43OP8642", vin: "VIN100008" },
+  // { vehicleNumber: "MP15QR9753", vin: "VIN100009" },
+  // { vehicleNumber: "MH49ST1122", vin: "VIN100010" },
+];
+
 const locations = [
   // -------- Maharashtra --------
   {
@@ -268,11 +281,31 @@ const generateRandomTimestamp = (monthsBack = 0) => {
   return Math.floor(Math.random() * (endTime - startTime) + startTime);
 };
 
-const generateRandomAlert = (monthsBack = 0) => {
+const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
   const randomTimestamp = generateRandomTimestamp(monthsBack);
-  const type = randomItem(Object.keys(alertDefinitions));
+
+  // ---------------------------------------
+  // Filter alert types based on severity
+  // ---------------------------------------
+  let availableTypes = Object.keys(alertDefinitions);
+
+  if (severityFilter) {
+    availableTypes = availableTypes.filter(
+      (type) =>
+        alertDefinitions[type].severity.toUpperCase() ===
+        severityFilter.toUpperCase(),
+    );
+  }
+
+  // If no matching types found → fallback to all
+  if (availableTypes.length === 0) {
+    availableTypes = Object.keys(alertDefinitions);
+  }
+
+  const type = randomItem(availableTypes);
   const alertMeta = alertDefinitions[type];
   const metrics = generateMetrics(type);
+  const selectedVehicle = randomItem(fleetVehicles);
 
   const selectedLocation = randomItem(locations);
   const latitude = selectedLocation.latitudeBase + (Math.random() - 0.5) * 0.02;
@@ -297,8 +330,8 @@ const generateRandomAlert = (monthsBack = 0) => {
     ],
     updatedOn: randomTimestamp,
     vehicle: {
-      vehicleNumber: `DL0${randomNumber(1, 9)}AB${randomNumber(1000, 9999)}`,
-      vin: `VIN${randomNumber(100000, 999999)}`,
+      vehicleNumber: selectedVehicle.vehicleNumber,
+      vin: selectedVehicle.vin,
     },
     webhookType: "alert",
     duration: randomNumber(1, 20),

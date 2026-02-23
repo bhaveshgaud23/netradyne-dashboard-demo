@@ -36,21 +36,38 @@ app.post("/generate-alerts", async (req, res) => {
   try {
     const count = parseInt(req.body.count) || 1;
     const monthsBack = parseInt(req.body.monthsBack) || 0;
+    const severity = req.body.severity || null; // NEW PARAM
 
     const alerts = [];
 
     for (let i = 0; i < count; i++) {
-      alerts.push(generateRandomAlert(monthsBack));
+      alerts.push(generateRandomAlert(monthsBack, severity));
     }
 
     await Alert.insertMany(alerts);
 
     res.json({
-      message: `${count} alerts generated within last ${monthsBack} month(s)`,
+      message: `${count} alerts generated`,
+      monthsBack,
+      severityFilter: severity || "NONE",
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to generate alerts" });
+  }
+});
+
+app.delete("/delete-all-alerts", async (req, res) => {
+  try {
+    const result = await Alert.deleteMany({});
+
+    res.json({
+      message: "All alerts deleted successfully",
+      deletedCount: result.deletedCount,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete alerts" });
   }
 });
 
