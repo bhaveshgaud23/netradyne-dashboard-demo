@@ -1,10 +1,11 @@
-const AlertCard = ({ alert, onClick }) => {
+const AlertCard = ({ alert, onClick, isNew, isUnread }) => {
   if (!alert) return null;
 
   const driverName = alert?.driver
     ? `${alert.driver.firstName} ${alert.driver.lastName}`
     : "Unknown Driver";
 
+  // 🔹 KEEP OLD date format functions
   const formatDate = (timestamp) => {
     if (!timestamp) return "--";
     return new Date(timestamp).toLocaleDateString("en-IN", {
@@ -23,25 +24,42 @@ const AlertCard = ({ alert, onClick }) => {
     });
   };
 
-  const getSeverityClass = (severity) => {
-    switch (severity) {
-      case "CRITICAL":
-        return "critical";
-      case "WARN":
-      case "MODERATE":
-        return "warn";
-      default:
-        return "info";
+  // 🔥 UPDATED severity logic (supports numeric severity also)
+  const getSeverityClass = (severity, numericSeverity) => {
+    if (severity) {
+      switch (severity.toUpperCase()) {
+        case "CRITICAL":
+          return "critical";
+        case "WARN":
+        case "MODERATE":
+          return "warn";
+        default:
+          return "info";
+      }
     }
+
+    // NEW: numeric fallback
+    if (numericSeverity === 3) return "critical";
+    if (numericSeverity === 2) return "warn";
+    return "info";
   };
 
-  const severityClass = getSeverityClass(alert?.details?.severityDescription);
+  const severityClass = getSeverityClass(
+    alert?.details?.severityDescription,
+    alert?.details?.severity,
+  );
 
   return (
     <div
-      className={`card ${severityClass}-border two-column`}
+      className={`card ${severityClass}-border two-column
+        ${isNew ? "new-alert-card" : ""}
+        ${isUnread ? "unread-card" : ""}
+      `}
       onClick={() => onClick(alert)}
     >
+      {/* 🔴 NEW: Unread indicator dot */}
+      {isUnread && <span className="unread-dot" />}
+
       {/* LEFT SIDE */}
       <div className="left">
         <h4>{alert?.details?.typeDescription || "Alert"}</h4>
