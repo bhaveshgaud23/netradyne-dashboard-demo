@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   LineChart,
   Line,
@@ -10,58 +10,99 @@ import {
 } from "recharts";
 
 function SpeedLineChart({ alerts }) {
-  // Get unique vehicle numbers
-  const vehicleList = useMemo(() => {
-    return [...new Set(alerts.map((a) => a.vehicle?.vehicleNumber))].filter(
-      Boolean
-    );
-  }, [alerts]);
-
   const [selectedVehicle, setSelectedVehicle] = useState("");
 
-  // Filter alerts by selected vehicle
-  const filteredData = useMemo(() => {
-    if (!selectedVehicle) return [];
+  // Get unique vehicles
+  const vehicleList = useMemo(() => {
+    return [...new Set(alerts.map(a => a.vehicle?.vehicleNumber))]
+      .filter(Boolean);
+  }, [alerts]);
 
+  // Filter alerts for selected vehicle
+  const chartData = useMemo(() => {
+    if (!selectedVehicle) return [];
+  
     return alerts
-      .filter((a) => a.vehicle?.vehicleNumber === selectedVehicle)
+      .filter(alert => alert.vehicle?.vehicleNumber === selectedVehicle)
       .sort((a, b) => a.timestamp - b.timestamp)
-      .map((alert) => ({
-        time: new Date(alert.timestamp).toLocaleTimeString(),
-        speed: alert.details?.maxVehicleSpeed || 0,
+      .map(alert => ({
+        time: alert.timestamp,
+        speed: alert.details?.maxVehicleSpeed ?? 0,
+        typeDescription: alert.details?.typeDescription ?? "N/A",
       }));
   }, [alerts, selectedVehicle]);
 
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+  
+      return (
+        <div
+          style={{
+            background: "#fff",
+            border: "1px solid #ccc",
+            padding: "10px",
+            borderRadius: "6px",
+          }}
+        >
+          <p><strong>Date & Time:</strong> {new Date(label).toLocaleString()}</p>
+          <p><strong>Speed:</strong> {data.speed} km/h</p>
+          <p><strong>Alert Type:</strong> {data.typeDescription}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="chart-card">
-      <h3>Vehicle Speed Over Time</h3>
+      <h3>Vehicle Speed While Alert</h3>
 
-      {/* Vehicle Selector */}
+      {/* ✅ Vehicle Dropdown */}
       <select
-        className="vehicle-select"
         value={selectedVehicle}
         onChange={(e) => setSelectedVehicle(e.target.value)}
+        style={{ marginBottom: "15px", padding: "6px" }}
       >
         <option value="">Select Vehicle</option>
-        {vehicleList.map((vehicle, index) => (
-          <option key={index} value={vehicle}>
+        {vehicleList.map((vehicle) => (
+          <option key={vehicle} value={vehicle}>
             {vehicle}
           </option>
         ))}
       </select>
 
       {selectedVehicle && (
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={filteredData}>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis />
-            <Tooltip />
+
+            {/* Format time properly */}
+            <XAxis
+              dataKey="time"
+              tickFormatter={(time) =>
+                new Date(time).toLocaleTimeString()
+              }
+            />
+
+            <YAxis
+              label={{
+                value: "Speed (km/h)",
+                angle: -90,
+                position: "insideLeft",
+              }}
+            />
+
+<Tooltip content={<CustomTooltip />} />
+
+            {/* Single Selected Vehicle Line */}
             <Line
               type="monotone"
               dataKey="speed"
-              stroke="#1e3a8a"
-              strokeWidth={3}
+              strokeWidth={4}
+              dot={{ r: 4 }}
+              activeDot={{ r: 7 }}
+              connectNulls={true}
             />
           </LineChart>
         </ResponsiveContainer>

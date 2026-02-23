@@ -76,7 +76,7 @@ function App() {
       <div className="dashboard">
         {/* Sidebar */}
         <div className="sidebar">
-          <h2>Netradyne</h2>
+          <h2>AlliedGlobetech LLP</h2>
 
           {/* Navigation Buttons */}
           <div className="nav-buttons">
