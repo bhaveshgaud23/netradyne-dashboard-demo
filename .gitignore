@@ -9,8 +9,7 @@ lerna-debug.log*
 
 # Env files
 .env
-frontend/.env
-backend/.env
+**/.env
 
 node_modules
 **/node_modules
