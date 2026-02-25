@@ -1,15 +1,23 @@
 import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
+import logo from './allied-image.png';
 import "leaflet/dist/leaflet.css";
-import Login from "./components/Login";
+import { MdDashboard } from "react-icons/md";
+import { MdNotificationsActive } from "react-icons/md";
+
 import TopHeader from "./components/TopHeader";
 
 function App() {
   const [alerts, setAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
+
+  // Keep OLD default view
   const [activeView, setActiveView] = useState("DASHBOARD");
+
+  // Filters (unchanged from OLD)
   const [severityFilter, setSeverityFilter] = useState("ALL");
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const [typeFilter, setTypeFilter] = useState("ALL");
@@ -17,65 +25,66 @@ function App() {
   const [toastAlerts, setToastAlerts] = useState([]);
   const [bundleMode, setBundleMode] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
-  const knownAlertIds = useRef(new Set());
+  // const knownAlertIds = useRef(new Set());
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // ✅ NEW STATES (added)
+  // const [toastAlerts, setToastAlerts] = useState([]);
+  // const [bundleMode, setBundleMode] = useState(false);
+  // const [notificationList, setNotificationList] = useState([]);
+  // const [showDropdown, setShowDropdown] = useState(false);
+
+  const knownAlertIds = useRef(new Set());
+  // const dropdownRef = useRef(null);
+
+  // Updated fetch (env based)
   const fetchAlerts = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (!res.ok) throw new Error("Unauthorized");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`);
+      if (!res.ok) throw new Error("Failed to fetch alerts");
       return await res.json();
     } catch (error) {
-      console.error(error);
-      setIsAuthenticated(false);
+      console.error("Error fetching alerts:", error);
       return [];
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("username");
-    setIsAuthenticated(false);
-  };
-
   useEffect(() => {
-    if (!isAuthenticated) return;
+    // Initial Load
     fetchAlerts().then((data) => {
       setAlerts(data);
       data.forEach((alert) => knownAlertIds.current.add(alert._id));
     });
 
-    // Poll every 1 second
+    // Poll every 5 seconds (kept OLD timing)
     const interval = setInterval(async () => {
       const data = await fetchAlerts();
-      if (!data) return;
-      setAlerts(data);
+      if (!data || data.length === 0) return;
 
       const newAlerts = data.filter(
-        (alert) => !knownAlertIds.current.has(alert._id),
+        (alert) => !knownAlertIds.current.has(alert._id)
       );
 
       if (newAlerts.length > 0) {
-        newAlerts.forEach((alert) => knownAlertIds.current.add(alert._id));
+        newAlerts.forEach((alert) =>
+          knownAlertIds.current.add(alert._id)
+        );
 
         setAlerts(data);
 
+        // Critical alerts only
         const criticalAlerts = newAlerts.filter(
-          (alert) => alert.details?.severity === 3,
+          (alert) => alert.details?.severity === 3
         );
 
         if (criticalAlerts.length > 0) {
+          // Update notification list
           setNotificationList((prev) => [
             ...criticalAlerts.map((a) => ({ ...a, read: false })),
             ...prev,
           ]);
 
+          // Bundle logic
           if (criticalAlerts.length > 3) {
             setBundleMode(true);
             setToastAlerts(criticalAlerts);
@@ -103,6 +112,27 @@ function App() {
     }
   }, []);
 
+  // Click outside dropdown
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       dropdownRef.current &&
+  //       !dropdownRef.current.contains(event.target)
+  //     ) {
+  //       setShowDropdown(false);
+  //     }
+  //   };
+
+  //   if (showDropdown) {
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //   }
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [showDropdown]);
+
+  // Mark as read
   const markAsRead = (clickedAlert) => {
     setSelectedAlert(clickedAlert);
 
@@ -115,6 +145,7 @@ function App() {
     );
   };
 
+  // Dynamic filter values (unchanged)
   const severities = [
     ...new Set(alerts.map((a) => a.details?.severityDescription)),
   ].filter(Boolean);
@@ -127,6 +158,7 @@ function App() {
     ...new Set(alerts.map((a) => a.details?.typeDescription)),
   ].filter(Boolean);
 
+  // Filtering + Sorting (unchanged)
   const filteredAlerts = alerts
     .filter((alert) => {
       const severityMatch =
@@ -155,98 +187,110 @@ function App() {
   return (
     <>
       <div className="dashboard">
+
+      
+
+        {/* Sidebar (OLD structure kept) */}
         <div className="sidebar">
-          <h2>AlliedGlobetech LLP</h2>
+        <div className="sidebar-header">
+  <h2 className="brand">
+    <img
+      src={logo}
+      alt="AlliedGlobetech Logo"
+      className="sidebar-logo"
+    />
+    AlliedGlobetech LLP
+  </h2>
+</div>
 
-          <div className="nav-buttons">
-            <button
-              className={activeView === "DASHBOARD" ? "active" : ""}
-              onClick={() => setActiveView("DASHBOARD")}
-            >
-              Dashboard
-            </button>
+  <nav className="sidebar-nav">
+    <div
+      className={`nav-item ${activeView === "DASHBOARD" ? "active" : ""}`}
+      onClick={() => setActiveView("DASHBOARD")}
+    >
+      <MdDashboard className="nav-icon" />
+      <span>Dashboard</span>
+    </div>
 
-            <button
-              className={activeView === "ALERTS" ? "active" : ""}
-              onClick={() => setActiveView("ALERTS")}
-            >
-              Show Overall Alerts
-            </button>
+    <div
+      className={`nav-item ${activeView === "ALERTS" ? "active" : ""}`}
+      onClick={() => setActiveView("ALERTS")}
+    >
+      <MdNotificationsActive className="nav-icon" />
+      <span>Overall Alerts</span>
+    </div>
+  </nav>
 
-            <button
-              onClick={handleLogout}
-              style={{ marginTop: "20px" }}
-            >
-              Logout
-            </button>
-          </div>
+  {activeView === "ALERTS" && (
+    <div className="sidebar-filters">
+      <h4>Filters</h4>
 
-          {activeView === "ALERTS" && (
-            <div className="filters">
-              <h3>Filters</h3>
+      <label>Severity</label>
+      <select onChange={(e) => setSeverityFilter(e.target.value)}>
+        <option value="ALL">All</option>
+        {severities.map((s, i) => (
+          <option key={i} value={s}>{s}</option>
+        ))}
+      </select>
 
-              <label>Severity</label>
-              <select onChange={(e) => setSeverityFilter(e.target.value)}>
-                <option value="ALL">All</option>
-                {severities.map((s, i) => (
-                  <option key={i} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+      <label>Category</label>
+      <select onChange={(e) => setCategoryFilter(e.target.value)}>
+        <option value="ALL">All</option>
+        {categories.map((c, i) => (
+          <option key={i} value={c}>{c}</option>
+        ))}
+      </select>
 
-              <label>Category</label>
-              <select onChange={(e) => setCategoryFilter(e.target.value)}>
-                <option value="ALL">All</option>
-                {categories.map((c, i) => (
-                  <option key={i} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
+      <label>Alert Type</label>
+      <select onChange={(e) => setTypeFilter(e.target.value)}>
+        <option value="ALL">All</option>
+        {types.map((t, i) => (
+          <option key={i} value={t}>{t}</option>
+        ))}
+      </select>
 
-              <label>Alert Type</label>
-              <select onChange={(e) => setTypeFilter(e.target.value)}>
-                <option value="ALL">All</option>
-                {types.map((t, i) => (
-                  <option key={i} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
+      <label>Sort By</label>
+      <select onChange={(e) => setSortOrder(e.target.value)}>
+        <option value="NEWEST">Newest First</option>
+        <option value="OLDEST">Oldest First</option>
+      </select>
+    </div>
+  )}
+</div>
 
-              <label>Sort By Time</label>
-              <select onChange={(e) => setSortOrder(e.target.value)}>
-                <option value="NEWEST">Newest First</option>
-                <option value="OLDEST">Oldest First</option>
-              </select>
-            </div>
-          )}
-        </div>
+        {/* <h2>{activeView}</h2> */}
 
+        {/* Content */}
         <div className="content">
-          <TopHeader
-            notificationList={notificationList}
-            markAsRead={markAsRead}
-            currentPage={activeView}
-            onLogout={handleLogout}
-          />
-
+        <TopHeader
+    notificationList={notificationList}
+    markAsRead={markAsRead}
+    currentPage = {activeView}
+  />
+  
           {activeView === "ALERTS" && (
             <>
+            <div className="dashboard-wrapper">
               {/* <h2>Alerts</h2> */}
               <div className="grid">
                 {filteredAlerts.map((alert) => (
                   <AlertCard
                     key={alert._id}
+                    // key={alert._id}
                     alert={alert}
                     onClick={markAsRead}
                     isNew={toastAlerts.some(a => a._id === alert._id)}
                     isUnread={notificationList.some(
                       n => n._id === alert._id
                     )}
+                    // onClick={markAsRead}
+                    // isNew={toastAlerts.some(a => a._id === alert._id)}
+                    // isUnread={notificationList.some(
+                    //   n => n._id === alert._id
+                    // )}
                   />
                 ))}
+              </div>
               </div>
             </>
           )}
@@ -260,11 +304,19 @@ function App() {
                 setNotificationList={setNotificationList}
                 onClick={markAsRead}
               />
+              {/* <h2>Dashboard</h2>/ */}
+              <Dashboard
+                alerts={alerts}
+                notificationList={notificationList}
+                setNotificationList={setNotificationList}
+                onClick={markAsRead}
+              />
             </>
           )}
         </div>
       </div>
 
+      {/* Toast Container */}
       <div className="toast-container">
         {bundleMode ? (
           <div className="toast bundle-toast">

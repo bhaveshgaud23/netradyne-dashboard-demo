@@ -14,19 +14,18 @@ function SpeedLineChart({ alerts }) {
 
   // Get unique vehicles
   const vehicleList = useMemo(() => {
-    return [...new Set(alerts.map((a) => a.vehicle?.vehicleNumber))].filter(
-      Boolean,
-    );
+    return [...new Set(alerts.map(a => a.vehicle?.vehicleNumber))]
+      .filter(Boolean);
   }, [alerts]);
 
   // Filter alerts for selected vehicle
   const chartData = useMemo(() => {
     if (!selectedVehicle) return [];
-
+  
     return alerts
-      .filter((alert) => alert.vehicle?.vehicleNumber === selectedVehicle)
+      .filter(alert => alert.vehicle?.vehicleNumber === selectedVehicle)
       .sort((a, b) => a.timestamp - b.timestamp)
-      .map((alert) => ({
+      .map(alert => ({
         time: alert.timestamp,
         speed: alert.details?.maxVehicleSpeed ?? 0,
         typeDescription: alert.details?.typeDescription ?? "N/A",
@@ -36,7 +35,7 @@ function SpeedLineChart({ alerts }) {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
-
+  
       return (
         <div
           style={{
@@ -46,15 +45,9 @@ function SpeedLineChart({ alerts }) {
             borderRadius: "6px",
           }}
         >
-          <p>
-            <strong>Date & Time:</strong> {new Date(label).toLocaleString()}
-          </p>
-          <p>
-            <strong>Speed:</strong> {data.speed} km/h
-          </p>
-          <p>
-            <strong>Alert Type:</strong> {data.typeDescription}
-          </p>
+          <p><strong>Date & Time:</strong> {new Date(label).toLocaleString()}</p>
+          <p><strong>Speed:</strong> {data.speed} km/h</p>
+          <p><strong>Alert Type:</strong> {data.typeDescription}</p>
         </div>
       );
     }
@@ -87,7 +80,9 @@ function SpeedLineChart({ alerts }) {
             {/* Format time properly */}
             <XAxis
               dataKey="time"
-              tickFormatter={(time) => new Date(time).toLocaleTimeString()}
+              tickFormatter={(time) =>
+                new Date(time).toLocaleTimeString()
+              }
             />
 
             <YAxis
@@ -98,7 +93,7 @@ function SpeedLineChart({ alerts }) {
               }}
             />
 
-            <Tooltip content={<CustomTooltip />} />
+<Tooltip content={<CustomTooltip />} />
 
             {/* Single Selected Vehicle Line */}
             <Line
