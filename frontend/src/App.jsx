@@ -3,52 +3,59 @@ import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
 import "leaflet/dist/leaflet.css";
+import Login from "./components/Login";
+import TopHeader from "./components/TopHeader";
 
 function App() {
   const [alerts, setAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
-
-  // Keep OLD default view
   const [activeView, setActiveView] = useState("DASHBOARD");
-
-  // Filters (unchanged from OLD)
   const [severityFilter, setSeverityFilter] = useState("ALL");
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const [typeFilter, setTypeFilter] = useState("ALL");
   const [sortOrder, setSortOrder] = useState("NEWEST");
-
-  // ✅ NEW STATES (added)
   const [toastAlerts, setToastAlerts] = useState([]);
   const [bundleMode, setBundleMode] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
-
   const knownAlertIds = useRef(new Set());
-  const dropdownRef = useRef(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Updated fetch (env based)
   const fetchAlerts = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`);
-      if (!res.ok) throw new Error("Failed to fetch alerts");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/alerts`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Unauthorized");
       return await res.json();
     } catch (error) {
-      console.error("Error fetching alerts:", error);
+      console.error(error);
+      setIsAuthenticated(false);
       return [];
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
+    setIsAuthenticated(false);
+  };
+
   useEffect(() => {
-    // Initial Load
+    if (!isAuthenticated) return;
     fetchAlerts().then((data) => {
       setAlerts(data);
       data.forEach((alert) => knownAlertIds.current.add(alert._id));
     });
 
-    // Poll every 5 seconds (kept OLD timing)
+    // Poll every 1 second
     const interval = setInterval(async () => {
       const data = await fetchAlerts();
-      if (!data || data.length === 0) return;
+      if (!data) return;
+      setAlerts(data);
 
       const newAlerts = data.filter(
         (alert) => !knownAlertIds.current.has(alert._id),
@@ -59,19 +66,16 @@ function App() {
 
         setAlerts(data);
 
-        // Critical alerts only
         const criticalAlerts = newAlerts.filter(
           (alert) => alert.details?.severity === 3,
         );
 
         if (criticalAlerts.length > 0) {
-          // Update notification list
           setNotificationList((prev) => [
             ...criticalAlerts.map((a) => ({ ...a, read: false })),
             ...prev,
           ]);
 
-          // Bundle logic
           if (criticalAlerts.length > 3) {
             setBundleMode(true);
             setToastAlerts(criticalAlerts);
@@ -89,37 +93,28 @@ function App() {
     }, 1000);
 
     return () => clearInterval(interval);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsAuthenticated(true);
+    }
   }, []);
 
-  // Click outside dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-
-    if (showDropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showDropdown]);
-
-  // Mark as read
   const markAsRead = (clickedAlert) => {
     setSelectedAlert(clickedAlert);
 
     setNotificationList((prev) =>
-      prev.filter((n) => n._id !== clickedAlert._id),
+      prev.filter((n) => n._id !== clickedAlert._id)
     );
 
-    setToastAlerts((prev) => prev.filter((a) => a._id !== clickedAlert._id));
+    setToastAlerts((prev) =>
+      prev.filter((a) => a._id !== clickedAlert._id)
+    );
   };
 
-  // Dynamic filter values (unchanged)
   const severities = [
     ...new Set(alerts.map((a) => a.details?.severityDescription)),
   ].filter(Boolean);
@@ -132,7 +127,6 @@ function App() {
     ...new Set(alerts.map((a) => a.details?.typeDescription)),
   ].filter(Boolean);
 
-  // Filtering + Sorting (unchanged)
   const filteredAlerts = alerts
     .filter((alert) => {
       const severityMatch =
@@ -154,43 +148,13 @@ function App() {
         : a.timestamp - b.timestamp,
     );
 
+  if (!isAuthenticated) {
+    return <Login onLogin={() => setIsAuthenticated(true)} />;
+  }
+
   return (
     <>
       <div className="dashboard">
-        {/* 🔔 Notification Bell */}
-        <div className="notification-wrapper" ref={dropdownRef}>
-          <div
-            className="notification-bell"
-            onClick={() => setShowDropdown(!showDropdown)}
-          >
-            🔔
-            {notificationList.length > 0 && (
-              <span className="notification-badge">
-                {notificationList.length}
-              </span>
-            )}
-          </div>
-
-          {showDropdown && (
-            <div className="notification-dropdown">
-              {notificationList.length === 0 && <p>No notifications</p>}
-              {notificationList.map((alert) => (
-                <div
-                  key={alert._id}
-                  className="dropdown-item"
-                  onClick={() => markAsRead(alert)}
-                >
-                  <strong>{alert.details?.typeDescription}</strong>
-                  <p>
-                    {alert.driver?.firstName} {alert.driver?.lastName}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Sidebar (OLD structure kept) */}
         <div className="sidebar">
           <h2>AlliedGlobetech LLP</h2>
 
@@ -207,6 +171,13 @@ function App() {
               onClick={() => setActiveView("ALERTS")}
             >
               Show Overall Alerts
+            </button>
+
+            <button
+              onClick={handleLogout}
+              style={{ marginTop: "20px" }}
+            >
+              Logout
             </button>
           </div>
 
@@ -253,19 +224,27 @@ function App() {
           )}
         </div>
 
-        {/* Content */}
         <div className="content">
+          <TopHeader
+            notificationList={notificationList}
+            markAsRead={markAsRead}
+            currentPage={activeView}
+            onLogout={handleLogout}
+          />
+
           {activeView === "ALERTS" && (
             <>
-              <h2>Alerts</h2>
+              {/* <h2>Alerts</h2> */}
               <div className="grid">
                 {filteredAlerts.map((alert) => (
                   <AlertCard
                     key={alert._id}
                     alert={alert}
                     onClick={markAsRead}
-                    isNew={toastAlerts.some((a) => a._id === alert._id)}
-                    isUnread={notificationList.some((n) => n._id === alert._id)}
+                    isNew={toastAlerts.some(a => a._id === alert._id)}
+                    isUnread={notificationList.some(
+                      n => n._id === alert._id
+                    )}
                   />
                 ))}
               </div>
@@ -274,7 +253,7 @@ function App() {
 
           {activeView === "DASHBOARD" && (
             <>
-              <h2>Dashboard</h2>
+              {/* <h2>Dashboard</h2>/ */}
               <Dashboard
                 alerts={alerts}
                 notificationList={notificationList}
@@ -286,7 +265,6 @@ function App() {
         </div>
       </div>
 
-      {/* Toast Container */}
       <div className="toast-container">
         {bundleMode ? (
           <div className="toast bundle-toast">
