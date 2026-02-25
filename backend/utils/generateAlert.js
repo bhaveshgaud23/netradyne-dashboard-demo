@@ -1,25 +1,26 @@
 const firstNames = [
-  "Rahul",
-  "Amit",
-  "Sneha",
-  "Karthik",
-  "Arjun",
-  "Rohit",
-  "Priya",
-  "Vikram",
-  "Neha",
-  "Aditya",
+  "Danish",
+  "Khalik",
+  "Sarvesh",
+  "Manishkumar",
+  "Bhavesh",
+  "Dipesh",
+  "Jayesh",
+  "Omkar",
+  "Prasad",
+  "Tejas",
 ];
 
 const lastNames = [
-  "Sharma",
-  "Verma",
-  "Reddy",
+  "Mandavkar",
+  "Mulani",
+  "Sawant",
   "Iyer",
-  "Das",
-  "Patel",
-  "Singh",
-  "Kulkarni",
+  "Ranpise",
+  "Patil",
+  "Wagh",
+  "Poojari",
+  "Shaikh",
 ];
 
 const fleetVehicles = [
@@ -96,54 +97,171 @@ const randomItem = (arr) => {
 const randomNumber = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-// ----------------------------------------------------
-// Intelligent Speed & G Force Logic
-// ----------------------------------------------------
-
 // ---------------------------------------------
 // OFFICIAL NETRADYNE SEVERITY CLASSIFICATION
 // ---------------------------------------------
-const severityBuckets = {
-  "ALERT (SEVERE)": [
-    "Collision Warning",
-    "Potential Collision",
-    "Driver Drowsiness",
-    "Driver Distraction",
-    "Traffic Light Violation",
-    "Railroad Crossing",
-    "High-G",
-    "Low Impact",
-    "Hard Braking",
-    "Hard Acceleration",
-    "Relative Speeding",
-    "Speeding Violations",
-    "Camera Obstruction",
-  ],
+const alertConfig = {
+  "Collision Warning": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Collision Alert",
+  },
 
-  "WARN (MODERATE)": [
-    "Following Distance",
-    "Hard Turn",
-    "Weaving",
-    "Swerve",
-    "U-Turn",
-    "Sign Violations",
-    "No Trucks Sign Violations",
-    "Seatbelt Compliance",
-    "Face Mask Compliance",
-    "Driver-initiated",
-  ],
+  "Potential Collision": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Collision Alert",
+  },
 
-  "DRIVER-STAR": ["DriverStar"],
+  "Driver Drowsiness": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Driver Monitoring",
+  },
 
-  NEUTRAL: ["Neutral Events", "Error Events", "Requested Video"],
-};
+  "Driver Distraction": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Driver Monitoring",
+  },
 
-// Map severity text → numeric value
-const severityValueMap = {
-  "ALERT (SEVERE)": 1,
-  "WARN (MODERATE)": 2,
-  "DRIVER-STAR": 3,
-  NEUTRAL: 4,
+  "Traffic Light Violation": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Safety Alert",
+  },
+
+  "Railroad Crossing": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Safety Alert",
+  },
+
+  "High-G": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Driving Behavior",
+  },
+
+  "Low Impact": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Collision Alert",
+  },
+
+  "Hard Braking": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Driving Behavior",
+  },
+
+  "Hard Acceleration": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Driving Behavior",
+  },
+
+  "Relative Speeding": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Driving Behavior",
+  },
+
+  "Speeding Violations": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "Driving Behavior",
+  },
+
+  "Camera Obstruction": {
+    severity: "ALERT",
+    severityValue: 1,
+    category: "System Alert",
+  },
+
+  "Following Distance": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driving Behavior",
+  },
+
+  "Hard Turn": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driving Behavior",
+  },
+
+  Weaving: {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driving Behavior",
+  },
+
+  Swerve: {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driving Behavior",
+  },
+
+  "U-Turn": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driving Behavior",
+  },
+
+  "Sign Violations": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Safety Alert",
+  },
+
+  "No Trucks Sign Violations": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Safety Alert",
+  },
+
+  "Seatbelt Compliance": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driver Monitoring",
+  },
+
+  "Face Mask Compliance": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driver Monitoring",
+  },
+
+  "Driver-initiated": {
+    severity: "WARN",
+    severityValue: 2,
+    category: "Driver Monitoring",
+  },
+
+  DriverStar: {
+    severity: "DRIVER-STAR",
+    severityValue: 3,
+    category: "Driver Performance",
+  },
+
+  "Neutral Events": {
+    severity: "NEUTRAL",
+    severityValue: 4,
+    category: "System Event",
+  },
+
+  "Error Events": {
+    severity: "NEUTRAL",
+    severityValue: 4,
+    category: "System Alert",
+  },
+
+  "Requested Video": {
+    severity: "NEUTRAL",
+    severityValue: 4,
+    category: "System Event",
+  },
 };
 
 const generateMetrics = (type) => {
@@ -200,29 +318,30 @@ const generateRandomTimestamp = (monthsBack = 0) => {
 const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
   const randomTimestamp = generateRandomTimestamp(monthsBack);
 
-  // ---------------------------------
-  // Determine allowed severities
-  // ---------------------------------
-  let allowedSeverities = Object.keys(severityBuckets);
+  let availableTypes = Object.keys(alertConfig);
 
+  // Filter by severity if provided
   if (severityFilter) {
-    allowedSeverities = allowedSeverities.filter(
-      (s) => s.toUpperCase() === severityFilter.toUpperCase(),
+    availableTypes = availableTypes.filter((type) =>
+      alertConfig[type].severity
+        .toUpperCase()
+        .includes(severityFilter.toUpperCase()),
     );
   }
 
-  if (allowedSeverities.length === 0) {
-    allowedSeverities = Object.keys(severityBuckets);
+  if (availableTypes.length === 0) {
+    availableTypes = Object.keys(alertConfig);
   }
 
-  const selectedSeverity = randomItem(allowedSeverities);
-  const type = randomItem(severityBuckets[selectedSeverity]);
+  const type = randomItem(availableTypes);
+  const config = alertConfig[type];
 
   const metrics = generateMetrics(type);
   const selectedVehicle = randomItem(fleetVehicles);
   const selectedLocation = randomItem(locations);
 
   const latitude = selectedLocation.latitudeBase + (Math.random() - 0.5) * 0.02;
+
   const longitude =
     selectedLocation.longitudeBase + (Math.random() - 0.5) * 0.02;
 
@@ -262,15 +381,18 @@ const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
     },
 
     details: {
-      severity: severityValueMap[selectedSeverity],
-      severityDescription: selectedSeverity,
-      confidence: parseFloat(Math.random().toFixed(2)),
-      typeDescription: type,
-      alertVideoStatus: 2,
+      severity: config.severityValue,
+      severityDescription: config.severity,
+      cause: randomNumber(1, 5),
+      typeId: randomNumber(1, 50),
+      category: randomNumber(1, 5),
       subTypeDescription: "Auto Generated Event",
-      categoryDescription: "Auto Classified",
-      weatherPrediction: randomItem(["Clear", "Rainy", "Foggy", "Sunny"]),
-
+      categoryDescription: config.category,
+      typeDescription: type,
+      confidence: parseFloat(Math.random().toFixed(2)),
+      alertVideoStatus: 2,
+      maxGForce: metrics.maxGForce,
+      maxVehicleSpeed: metrics.maxVehicleSpeed,
       location: {
         address: selectedLocation.address,
         city: selectedLocation.city,
@@ -278,10 +400,6 @@ const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
         postalCode: selectedLocation.postalCode,
         state: selectedLocation.state,
       },
-
-      maxGForce: metrics.maxGForce,
-      maxVehicleSpeed: metrics.maxVehicleSpeed,
-      pointOfImpact: randomItem(["Front", "Rear", "Left", "Right"]),
     },
 
     camera: {
