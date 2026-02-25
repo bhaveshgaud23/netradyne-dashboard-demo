@@ -11,6 +11,7 @@ const AlertCard = ({
     : "Unknown Driver";
 
   // 🔹 KEEP OLD date format functions
+  // 🔹 KEEP OLD date format functions
   const formatDate = (timestamp) => {
     if (!timestamp) return "--";
     return new Date(timestamp).toLocaleDateString("en-IN", {
@@ -47,6 +48,24 @@ const AlertCard = ({
     if (numericSeverity === 3) return "critical";
     if (numericSeverity === 2) return "warn";
     return "info";
+  // 🔥 UPDATED severity logic (supports numeric severity also)
+  const getSeverityClass = (severity, numericSeverity) => {
+    if (severity) {
+      switch (severity.toUpperCase()) {
+        case "CRITICAL":
+          return "critical";
+        case "WARN":
+        case "MODERATE":
+          return "warn";
+        default:
+          return "info";
+      }
+    }
+
+    // NEW: numeric fallback
+    if (numericSeverity === 3) return "critical";
+    if (numericSeverity === 2) return "warn";
+    return "info";
   };
 
   const severityClass = getSeverityClass(
@@ -60,10 +79,17 @@ const AlertCard = ({
         ${isNew ? "new-alert-card" : ""}
         ${isUnread ? "unread-card" : ""}
       `}
+      // className={`card ${severityClass}-border two-column
+      //   ${isNew ? "new-alert-card" : ""}
+      //   ${isUnread ? "unread-card" : ""}
+      // `}
       onClick={() => onClick(alert)}
     >
       {/* 🔴 NEW: Unread indicator dot */}
       {isUnread && <span className="unread-dot" />}
+
+      {/* 🔴 NEW: Unread indicator dot
+      {isUnread && <span className="unread-dot" />} */}
 
       {/* LEFT SIDE */}
       <div className="left">
@@ -88,6 +114,7 @@ const AlertCard = ({
       </div>
     </div>
   );
+}
 };
 
 export default AlertCard;

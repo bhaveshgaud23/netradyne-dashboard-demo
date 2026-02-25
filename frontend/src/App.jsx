@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
@@ -21,11 +22,16 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const [typeFilter, setTypeFilter] = useState("ALL");
   const [sortOrder, setSortOrder] = useState("NEWEST");
-
-  // ✅ NEW STATES (added)
   const [toastAlerts, setToastAlerts] = useState([]);
   const [bundleMode, setBundleMode] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
+  // const knownAlertIds = useRef(new Set());
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // ✅ NEW STATES (added)
+  // const [toastAlerts, setToastAlerts] = useState([]);
+  // const [bundleMode, setBundleMode] = useState(false);
+  // const [notificationList, setNotificationList] = useState([]);
   // const [showDropdown, setShowDropdown] = useState(false);
 
   const knownAlertIds = useRef(new Set());
@@ -96,6 +102,14 @@ function App() {
     }, 1000);
 
     return () => clearInterval(interval);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsAuthenticated(true);
+    }
   }, []);
 
   // Click outside dropdown
@@ -156,16 +170,19 @@ function App() {
         alert.details?.categoryDescription === categoryFilter;
 
       const typeMatch =
-        typeFilter === "ALL" ||
-        alert.details?.typeDescription === typeFilter;
+        typeFilter === "ALL" || alert.details?.typeDescription === typeFilter;
 
       return severityMatch && categoryMatch && typeMatch;
     })
     .sort((a, b) =>
       sortOrder === "NEWEST"
         ? b.timestamp - a.timestamp
-        : a.timestamp - b.timestamp
+        : a.timestamp - b.timestamp,
     );
+
+  if (!isAuthenticated) {
+    return <Login onLogin={() => setIsAuthenticated(true)} />;
+  }
 
   return (
     <>
@@ -259,12 +276,18 @@ function App() {
                 {filteredAlerts.map((alert) => (
                   <AlertCard
                     key={alert._id}
+                    // key={alert._id}
                     alert={alert}
                     onClick={markAsRead}
                     isNew={toastAlerts.some(a => a._id === alert._id)}
                     isUnread={notificationList.some(
                       n => n._id === alert._id
                     )}
+                    // onClick={markAsRead}
+                    // isNew={toastAlerts.some(a => a._id === alert._id)}
+                    // isUnread={notificationList.some(
+                    //   n => n._id === alert._id
+                    // )}
                   />
                 ))}
               </div>
@@ -274,6 +297,13 @@ function App() {
 
           {activeView === "DASHBOARD" && (
             <>
+              {/* <h2>Dashboard</h2>/ */}
+              <Dashboard
+                alerts={alerts}
+                notificationList={notificationList}
+                setNotificationList={setNotificationList}
+                onClick={markAsRead}
+              />
               {/* <h2>Dashboard</h2>/ */}
               <Dashboard
                 alerts={alerts}

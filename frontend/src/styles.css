@@ -1,13 +1,18 @@
 /* Global Reset */
+/* Global Reset */
 body {
   margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8fafc;
 }
 
 /* Layout */
+/* Layout */
 .dashboard {
   display: flex;
+  height: 100vh;
   height: 100vh;
 }
 
@@ -242,9 +247,11 @@ body {
 
 .card {
   transform: translateY(-2px);
+  transform: translateY(-2px);
   background: #ffffff;
   border-radius: 12px;
-  padding: 14px 16px; /* reduced padding */
+  padding: 14px 16px;
+  /* reduced padding */
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.18s ease;
@@ -286,6 +293,7 @@ body {
 .card.info-border {
   border-top: 4px solid #1565c0;
 }
+
 .two-column {
   display: flex;
   justify-content: space-between;
@@ -295,8 +303,10 @@ body {
 
 /* LEFT SIDE */
 .left {
-  flex: 1; /* take remaining space */
-  min-width: 0; /* IMPORTANT for ellipsis to work */
+  flex: 1;
+  /* take remaining space */
+  min-width: 0;
+  /* IMPORTANT for ellipsis to work */
 }
 
 .left h4 {
@@ -332,6 +342,7 @@ body {
 
 .filters {
   /* margin-top: 20px; */
+  /* margin-top: 20px; */
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -366,8 +377,8 @@ body {
   color: #999;
 }
 
-
 .nav-buttons {
+  /* margin-bottom: 20px; */
   /* margin-bottom: 20px; */
 }
 
@@ -382,8 +393,9 @@ body {
 .nav-buttons button.active {
   /* background: rgb(48, 29, 29);
   color: rgb(243, 29, 29); */
+  /* background: rgb(48, 29, 29);
+  color: rgb(243, 29, 29); */
 }
-
 
 .dashboard-cards {
   display: grid;
@@ -402,7 +414,9 @@ body {
   flex-direction: column;
   justify-content: center;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .stat-card h4 {
