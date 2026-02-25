@@ -97,162 +97,78 @@ const randomNumber = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 // ----------------------------------------------------
-// REALISTIC ALERT DEFINITIONS (Fixed Severity + Category)
-// ----------------------------------------------------
-const alertDefinitions = {
-  "SIGN-VIOLATIONS": {
-    category: "Safety Alert",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  "DRIVER-DROWSINESS": {
-    category: "Driver Monitoring",
-    severity: "CRITICAL",
-    severityValue: 3,
-  },
-  "NO-TRUCKS-SIGN-VIOLATIONS": {
-    category: "Safety Alert",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  "ERROR-EVENTS": {
-    category: "System Alert",
-    severity: "INFO",
-    severityValue: 0,
-  },
-  "RELATIVE-SPEEDING": {
-    category: "Driving Behavior",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  WEAVING: {
-    category: "Driving Behavior",
-    severity: "MODERATE",
-    severityValue: 2,
-  },
-  "RAILROAD-CROSSING": {
-    category: "Safety Alert",
-    severity: "CRITICAL",
-    severityValue: 3,
-  },
-  "DRIVER-DISTRACTION": {
-    category: "Driver Monitoring",
-    severity: "CRITICAL",
-    severityValue: 3,
-  },
-  "HARD-TURN": {
-    category: "Driving Behavior",
-    severity: "MODERATE",
-    severityValue: 2,
-  },
-  "COLLISION-WARNING": {
-    category: "Collision Alert",
-    severity: "CRITICAL",
-    severityValue: 3,
-  },
-  "CAMERA-OBSTRUCTION": {
-    category: "System Alert",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  "SPEEDING-VIOLATIONS": {
-    category: "Driving Behavior",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  SWERVE: {
-    category: "Driving Behavior",
-    severity: "MODERATE",
-    severityValue: 2,
-  },
-  "DRIVER-INITIATED": {
-    category: "Driver Monitoring",
-    severity: "INFO",
-    severityValue: 0,
-  },
-  "FACE-MASK-COMPLIANCE": {
-    category: "Driver Monitoring",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  "TRAFFIC-LIGHT-VIOLATION": {
-    category: "Safety Alert",
-    severity: "CRITICAL",
-    severityValue: 3,
-  },
-  "HARD-BRAKING": {
-    category: "Driving Behavior",
-    severity: "MODERATE",
-    severityValue: 2,
-  },
-  "U-TURN": {
-    category: "Driving Behavior",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  "SEATBELT-COMPLIANCE": {
-    category: "Driver Monitoring",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  "HARD-ACCELERATION": {
-    category: "Driving Behavior",
-    severity: "MODERATE",
-    severityValue: 2,
-  },
-  "FOLLOWING-DISTANCE": {
-    category: "Distance Compliance",
-    severity: "WARN",
-    severityValue: 1,
-  },
-  "HIGH-G": {
-    category: "Driving Behavior",
-    severity: "CRITICAL",
-    severityValue: 3,
-  },
-  "DRIVER-STAR": {
-    category: "Driver Performance",
-    severity: "INFO",
-    severityValue: 0,
-  },
-  "LOW-IMPACT": {
-    category: "Collision Alert",
-    severity: "MODERATE",
-    severityValue: 2,
-  },
-  "POTENTIAL-COLLISION": {
-    category: "Collision Alert",
-    severity: "CRITICAL",
-    severityValue: 3,
-  },
-};
-
-// ----------------------------------------------------
 // Intelligent Speed & G Force Logic
 // ----------------------------------------------------
+
+// ---------------------------------------------
+// OFFICIAL NETRADYNE SEVERITY CLASSIFICATION
+// ---------------------------------------------
+const severityBuckets = {
+  "ALERT (SEVERE)": [
+    "Collision Warning",
+    "Potential Collision",
+    "Driver Drowsiness",
+    "Driver Distraction",
+    "Traffic Light Violation",
+    "Railroad Crossing",
+    "High-G",
+    "Low Impact",
+    "Hard Braking",
+    "Hard Acceleration",
+    "Relative Speeding",
+    "Speeding Violations",
+    "Camera Obstruction",
+  ],
+
+  "WARN (MODERATE)": [
+    "Following Distance",
+    "Hard Turn",
+    "Weaving",
+    "Swerve",
+    "U-Turn",
+    "Sign Violations",
+    "No Trucks Sign Violations",
+    "Seatbelt Compliance",
+    "Face Mask Compliance",
+    "Driver-initiated",
+  ],
+
+  "DRIVER-STAR": ["DriverStar"],
+
+  NEUTRAL: ["Neutral Events", "Error Events", "Requested Video"],
+};
+
+// Map severity text → numeric value
+const severityValueMap = {
+  "ALERT (SEVERE)": 1,
+  "WARN (MODERATE)": 2,
+  "DRIVER-STAR": 3,
+  NEUTRAL: 4,
+};
+
 const generateMetrics = (type) => {
   switch (type) {
-    case "HIGH-G":
+    case "High-G":
       return {
-        maxGForce: parseFloat((Math.random() * 3 + 3).toFixed(2)), // 3–6G
+        maxGForce: parseFloat((Math.random() * 3 + 3).toFixed(2)),
         maxVehicleSpeed: parseFloat((Math.random() * 80 + 40).toFixed(1)),
       };
 
-    case "HARD-BRAKING":
+    case "Hard Braking":
       return {
         maxGForce: parseFloat((Math.random() * 2 + 2).toFixed(2)),
         maxVehicleSpeed: parseFloat((Math.random() * 60 + 30).toFixed(1)),
       };
 
-    case "COLLISION-WARNING":
-    case "POTENTIAL-COLLISION":
+    case "Collision Warning":
+    case "Potential Collision":
       return {
         maxGForce: parseFloat((Math.random() * 4 + 2).toFixed(2)),
         maxVehicleSpeed: parseFloat((Math.random() * 90 + 50).toFixed(1)),
       };
 
-    case "DRIVER-DROWSINESS":
-    case "DRIVER-DISTRACTION":
+    case "Driver Drowsiness":
+    case "Driver Distraction":
       return {
         maxGForce: parseFloat((Math.random() * 1).toFixed(2)),
         maxVehicleSpeed: parseFloat((Math.random() * 70 + 20).toFixed(1)),
@@ -284,30 +200,28 @@ const generateRandomTimestamp = (monthsBack = 0) => {
 const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
   const randomTimestamp = generateRandomTimestamp(monthsBack);
 
-  // ---------------------------------------
-  // Filter alert types based on severity
-  // ---------------------------------------
-  let availableTypes = Object.keys(alertDefinitions);
+  // ---------------------------------
+  // Determine allowed severities
+  // ---------------------------------
+  let allowedSeverities = Object.keys(severityBuckets);
 
   if (severityFilter) {
-    availableTypes = availableTypes.filter(
-      (type) =>
-        alertDefinitions[type].severity.toUpperCase() ===
-        severityFilter.toUpperCase(),
+    allowedSeverities = allowedSeverities.filter(
+      (s) => s.toUpperCase() === severityFilter.toUpperCase(),
     );
   }
 
-  // If no matching types found → fallback to all
-  if (availableTypes.length === 0) {
-    availableTypes = Object.keys(alertDefinitions);
+  if (allowedSeverities.length === 0) {
+    allowedSeverities = Object.keys(severityBuckets);
   }
 
-  const type = randomItem(availableTypes);
-  const alertMeta = alertDefinitions[type];
+  const selectedSeverity = randomItem(allowedSeverities);
+  const type = randomItem(severityBuckets[selectedSeverity]);
+
   const metrics = generateMetrics(type);
   const selectedVehicle = randomItem(fleetVehicles);
-
   const selectedLocation = randomItem(locations);
+
   const latitude = selectedLocation.latitudeBase + (Math.random() - 0.5) * 0.02;
   const longitude =
     selectedLocation.longitudeBase + (Math.random() - 0.5) * 0.02;
@@ -320,6 +234,7 @@ const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
         timestamp: randomTimestamp,
       },
     ],
+
     videos: [
       {
         id: randomNumber(1000000000, 9999999999),
@@ -328,31 +243,34 @@ const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
         timestamp: randomTimestamp,
       },
     ],
+
     updatedOn: randomTimestamp,
+
     vehicle: {
       vehicleNumber: selectedVehicle.vehicleNumber,
       vin: selectedVehicle.vin,
     },
+
     webhookType: "alert",
     duration: randomNumber(1, 20),
     tenantName: "NETRADYNE",
+
     driver: {
       firstName: randomItem(firstNames),
       lastName: randomItem(lastNames),
       driverId: `DR${randomNumber(1000, 9999)}`,
     },
+
     details: {
-      severity: alertMeta.severityValue,
+      severity: severityValueMap[selectedSeverity],
+      severityDescription: selectedSeverity,
       confidence: parseFloat(Math.random().toFixed(2)),
-      cause: randomNumber(1, 5),
-      typeId: randomNumber(1, 30),
       typeDescription: type,
       alertVideoStatus: 2,
-      severityDescription: alertMeta.severity,
-      category: randomNumber(1, 5),
       subTypeDescription: "Auto Generated Event",
-      categoryDescription: alertMeta.category,
+      categoryDescription: "Auto Classified",
       weatherPrediction: randomItem(["Clear", "Rainy", "Foggy", "Sunny"]),
+
       location: {
         address: selectedLocation.address,
         city: selectedLocation.city,
@@ -360,13 +278,16 @@ const generateRandomAlert = (monthsBack = 0, severityFilter = null) => {
         postalCode: selectedLocation.postalCode,
         state: selectedLocation.state,
       },
+
       maxGForce: metrics.maxGForce,
       maxVehicleSpeed: metrics.maxVehicleSpeed,
       pointOfImpact: randomItem(["Front", "Rear", "Left", "Right"]),
     },
+
     camera: {
       id: `CAM${randomNumber(1000, 9999)}`,
     },
+
     timestamp: randomTimestamp,
     status: randomItem(["CONFIRMED", "PENDING_REVIEW"]),
   };

@@ -107,12 +107,10 @@ function App() {
     setSelectedAlert(clickedAlert);
 
     setNotificationList((prev) =>
-      prev.filter((n) => n._id !== clickedAlert._id)
+      prev.filter((n) => n._id !== clickedAlert._id),
     );
 
-    setToastAlerts((prev) =>
-      prev.filter((a) => a._id !== clickedAlert._id)
-    );
+    setToastAlerts((prev) => prev.filter((a) => a._id !== clickedAlert._id));
   };
 
   const severities = [
@@ -173,10 +171,7 @@ function App() {
               Show Overall Alerts
             </button>
 
-            <button
-              onClick={handleLogout}
-              style={{ marginTop: "20px" }}
-            >
+            <button onClick={handleLogout} style={{ marginTop: "20px" }}>
               Logout
             </button>
           </div>
@@ -241,10 +236,8 @@ function App() {
                     key={alert._id}
                     alert={alert}
                     onClick={markAsRead}
-                    isNew={toastAlerts.some(a => a._id === alert._id)}
-                    isUnread={notificationList.some(
-                      n => n._id === alert._id
-                    )}
+                    isNew={toastAlerts.some((a) => a._id === alert._id)}
+                    isUnread={notificationList.some((n) => n._id === alert._id)}
                   />
                 ))}
               </div>
