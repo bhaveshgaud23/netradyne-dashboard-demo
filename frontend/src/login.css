@@ -1,0 +1,78 @@
+/* Background Container */
+.containerLogin {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1976d2, #42a5f5);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Card */
+.cardLogin {
+    background: #ffffff;
+    padding: 40px 30px;
+    width: 340px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.cardLogin:hover {
+    transform: translateY(-5px);
+}
+
+/* Title */
+.titleLogin {
+    margin-bottom: 20px;
+    color: #1976d2;
+    font-weight: 600;
+}
+
+/* Error Message */
+.errorLogin {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Inputs */
+.inputLogin {
+    width: 80%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.inputLogin:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+/* Button */
+.buttonLogin {
+    width: 40%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #1976d2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buttonLogin:hover {
+    background: #1565c0;
+}
+
+.buttonLogin:active {
+    transform: scale(0.98);
+}
