@@ -2,7 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
+import logo from './allied-image.png';
 import "leaflet/dist/leaflet.css";
+import { MdDashboard } from "react-icons/md";
+import { MdNotificationsActive } from "react-icons/md";
+
 import TopHeader from "./components/TopHeader";
 
 function App() {
@@ -171,66 +175,71 @@ function App() {
 
         {/* Sidebar (OLD structure kept) */}
         <div className="sidebar">
-          <h2>AlliedGlobetech LLP</h2>
+        <div className="sidebar-header">
+  <h2 className="brand">
+    <img
+      src={logo}
+      alt="AlliedGlobetech Logo"
+      className="sidebar-logo"
+    />
+    AlliedGlobetech LLP
+  </h2>
+</div>
 
-          <div className="nav-buttons">
-            <button
-              className={activeView === "DASHBOARD" ? "active" : ""}
-              onClick={() => setActiveView("DASHBOARD")}
-            >
-              Dashboard
-            </button>
+  <nav className="sidebar-nav">
+    <div
+      className={`nav-item ${activeView === "DASHBOARD" ? "active" : ""}`}
+      onClick={() => setActiveView("DASHBOARD")}
+    >
+      <MdDashboard className="nav-icon" />
+      <span>Dashboard</span>
+    </div>
 
-            <button
-              className={activeView === "ALERTS" ? "active" : ""}
-              onClick={() => setActiveView("ALERTS")}
-            >
-              Show Overall Alerts
-            </button>
-          </div>
+    <div
+      className={`nav-item ${activeView === "ALERTS" ? "active" : ""}`}
+      onClick={() => setActiveView("ALERTS")}
+    >
+      <MdNotificationsActive className="nav-icon" />
+      <span>Overall Alerts</span>
+    </div>
+  </nav>
 
-          {activeView === "ALERTS" && (
-            <div className="filters">
-              <h3>Filters</h3>
+  {activeView === "ALERTS" && (
+    <div className="sidebar-filters">
+      <h4>Filters</h4>
 
-              <label>Severity</label>
-              <select onChange={(e) => setSeverityFilter(e.target.value)}>
-                <option value="ALL">All</option>
-                {severities.map((s, i) => (
-                  <option key={i} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+      <label>Severity</label>
+      <select onChange={(e) => setSeverityFilter(e.target.value)}>
+        <option value="ALL">All</option>
+        {severities.map((s, i) => (
+          <option key={i} value={s}>{s}</option>
+        ))}
+      </select>
 
-              <label>Category</label>
-              <select onChange={(e) => setCategoryFilter(e.target.value)}>
-                <option value="ALL">All</option>
-                {categories.map((c, i) => (
-                  <option key={i} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
+      <label>Category</label>
+      <select onChange={(e) => setCategoryFilter(e.target.value)}>
+        <option value="ALL">All</option>
+        {categories.map((c, i) => (
+          <option key={i} value={c}>{c}</option>
+        ))}
+      </select>
 
-              <label>Alert Type</label>
-              <select onChange={(e) => setTypeFilter(e.target.value)}>
-                <option value="ALL">All</option>
-                {types.map((t, i) => (
-                  <option key={i} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
+      <label>Alert Type</label>
+      <select onChange={(e) => setTypeFilter(e.target.value)}>
+        <option value="ALL">All</option>
+        {types.map((t, i) => (
+          <option key={i} value={t}>{t}</option>
+        ))}
+      </select>
 
-              <label>Sort By Time</label>
-              <select onChange={(e) => setSortOrder(e.target.value)}>
-                <option value="NEWEST">Newest First</option>
-                <option value="OLDEST">Oldest First</option>
-              </select>
-            </div>
-          )}
-        </div>
+      <label>Sort By</label>
+      <select onChange={(e) => setSortOrder(e.target.value)}>
+        <option value="NEWEST">Newest First</option>
+        <option value="OLDEST">Oldest First</option>
+      </select>
+    </div>
+  )}
+</div>
 
         {/* <h2>{activeView}</h2> */}
 
@@ -244,6 +253,7 @@ function App() {
   
           {activeView === "ALERTS" && (
             <>
+            <div className="dashboard-wrapper">
               {/* <h2>Alerts</h2> */}
               <div className="grid">
                 {filteredAlerts.map((alert) => (
@@ -257,6 +267,7 @@ function App() {
                     )}
                   />
                 ))}
+              </div>
               </div>
             </>
           )}
