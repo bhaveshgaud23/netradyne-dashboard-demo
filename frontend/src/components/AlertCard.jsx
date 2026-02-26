@@ -1,17 +1,19 @@
-const AlertCard = ({
-  alert,
-  onClick,
-  isNew,
-  isUnread
-}) => {
+import {
+  FaExclamationTriangle,
+  FaCarCrash,
+  FaUserShield,
+  FaCarSide,
+  FaCogs,
+  FaStar,
+} from "react-icons/fa";
+
+const AlertCard = ({ alert, onClick, isNew, isUnread }) => {
   if (!alert) return null;
 
   const driverName = alert?.driver
     ? `${alert.driver.firstName} ${alert.driver.lastName}`
     : "Unknown Driver";
 
-  // 🔹 KEEP OLD date format functions
-  // 🔹 KEEP OLD date format functions
   const formatDate = (timestamp) => {
     if (!timestamp) return "--";
     return new Date(timestamp).toLocaleDateString("en-IN", {
@@ -30,11 +32,10 @@ const AlertCard = ({
     });
   };
 
-  // 🔥 UPDATED severity logic (supports numeric severity also)
   const getSeverityClass = (severity, numericSeverity) => {
     if (severity) {
       switch (severity.toUpperCase()) {
-        case "CRITICAL":
+        case "ALERT":
           return "critical";
         case "WARN":
         case "MODERATE":
@@ -44,26 +45,7 @@ const AlertCard = ({
       }
     }
 
-    // NEW: numeric fallback
-    if (numericSeverity === 3) return "critical";
-    if (numericSeverity === 2) return "warn";
-    return "info";
-  // 🔥 UPDATED severity logic (supports numeric severity also)
-  const getSeverityClass = (severity, numericSeverity) => {
-    if (severity) {
-      switch (severity.toUpperCase()) {
-        case "CRITICAL":
-          return "critical";
-        case "WARN":
-        case "MODERATE":
-          return "warn";
-        default:
-          return "info";
-      }
-    }
-
-    // NEW: numeric fallback
-    if (numericSeverity === 3) return "critical";
+    if (numericSeverity === 1) return "critical";
     if (numericSeverity === 2) return "warn";
     return "info";
   };
@@ -73,27 +55,45 @@ const AlertCard = ({
     alert?.details?.severity
   );
 
+  // 🔹 Icon selector based on category
+  const getCategoryIcon = (category) => {
+    switch (category?.toUpperCase()) {
+      case "SAFETY ALERT":
+        return <FaExclamationTriangle />;
+      case "COLLISION ALERT":
+        return <FaCarCrash />;
+      case "DRIVER MONITORING":
+        return <FaUserShield />;
+      case "DRIVING BEHAVIOR":
+        return <FaCarSide />;
+      case "SYSTEM ALERT":
+        return <FaCogs />;
+      case "DRIVER PERFORMANCE":
+        return <FaStar />;
+      default:
+        return <FaExclamationTriangle />;
+    }
+  };
+
   return (
     <div
       className={`card ${severityClass}-border two-column
         ${isNew ? "new-alert-card" : ""}
         ${isUnread ? "unread-card" : ""}
       `}
-      // className={`card ${severityClass}-border two-column
-      //   ${isNew ? "new-alert-card" : ""}
-      //   ${isUnread ? "unread-card" : ""}
-      // `}
       onClick={() => onClick(alert)}
     >
-      {/* 🔴 NEW: Unread indicator dot */}
       {isUnread && <span className="unread-dot" />}
-
-      {/* 🔴 NEW: Unread indicator dot
-      {isUnread && <span className="unread-dot" />} */}
 
       {/* LEFT SIDE */}
       <div className="left">
-        <h4>{alert?.details?.typeDescription || "Alert"}</h4>
+        {/* 🔹 ICON + TITLE */}
+        <div className="title-row">
+          <span className={`alert-icon ${severityClass}`}>
+            {getCategoryIcon(alert?.details?.categoryDescription)}
+          </span>
+          <h4>{alert?.details?.typeDescription || "Alert"}</h4>
+        </div>
 
         <span className={`badge ${severityClass}`}>
           {alert?.details?.severityDescription || "INFO"}
@@ -114,7 +114,6 @@ const AlertCard = ({
       </div>
     </div>
   );
-}
 };
 
 export default AlertCard;

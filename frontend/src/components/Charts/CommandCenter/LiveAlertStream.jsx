@@ -21,7 +21,7 @@ function LiveAlertStream({ alerts }) {
 
       <div className="alert-list">
         {liveAlerts.map((alert, index) => {
-          const isCritical = alert.details?.severity === 3;
+          const isCritical = alert.details?.severity === 1;
 
           return (
             <div

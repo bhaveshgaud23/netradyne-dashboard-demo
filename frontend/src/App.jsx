@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useEffect, useState, useRef } from "react";
+// import { useEffect, useState, useRef } from "react";
 import AlertCard from "./components/AlertCard";
 import AlertModal from "./components/AlertModal";
 import Dashboard from "./components/Dashboard";
@@ -7,6 +7,7 @@ import logo from './allied-image.png';
 import "leaflet/dist/leaflet.css";
 import { MdDashboard } from "react-icons/md";
 import { MdNotificationsActive } from "react-icons/md";
+import Login from "./components/Login";
 
 import TopHeader from "./components/TopHeader";
 
@@ -26,7 +27,11 @@ function App() {
   const [bundleMode, setBundleMode] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
   // const knownAlertIds = useRef(new Set());
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!localStorage.getItem("token");
+  });
 
   // ✅ NEW STATES (added)
   // const [toastAlerts, setToastAlerts] = useState([]);
@@ -47,6 +52,13 @@ function App() {
       console.error("Error fetching alerts:", error);
       return [];
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
+    setIsAuthenticated(false);
   };
 
   useEffect(() => {
@@ -74,7 +86,7 @@ function App() {
 
         // Critical alerts only
         const criticalAlerts = newAlerts.filter(
-          (alert) => alert.details?.severity === 3
+          (alert) => alert.details?.severity === 1
         );
 
         if (criticalAlerts.length > 0) {
@@ -226,34 +238,46 @@ function App() {
       <h4>Filters</h4>
 
       <label>Severity</label>
-      <select onChange={(e) => setSeverityFilter(e.target.value)}>
-        <option value="ALL">All</option>
-        {severities.map((s, i) => (
-          <option key={i} value={s}>{s}</option>
-        ))}
-      </select>
+<select
+  value={severityFilter}
+  onChange={(e) => setSeverityFilter(e.target.value)}
+>
+  <option value="ALL">All</option>
+  {severities.map((s, i) => (
+    <option key={i} value={s}>{s}</option>
+  ))}
+</select>
 
-      <label>Category</label>
-      <select onChange={(e) => setCategoryFilter(e.target.value)}>
-        <option value="ALL">All</option>
-        {categories.map((c, i) => (
-          <option key={i} value={c}>{c}</option>
-        ))}
-      </select>
+<label>Category</label>
+<select
+  value={categoryFilter}
+  onChange={(e) => setCategoryFilter(e.target.value)}
+>
+  <option value="ALL">All</option>
+  {categories.map((c, i) => (
+    <option key={i} value={c}>{c}</option>
+  ))}
+</select>
 
-      <label>Alert Type</label>
-      <select onChange={(e) => setTypeFilter(e.target.value)}>
-        <option value="ALL">All</option>
-        {types.map((t, i) => (
-          <option key={i} value={t}>{t}</option>
-        ))}
-      </select>
+<label>Alert Type</label>
+<select
+  value={typeFilter}
+  onChange={(e) => setTypeFilter(e.target.value)}
+>
+  <option value="ALL">All</option>
+  {types.map((t, i) => (
+    <option key={i} value={t}>{t}</option>
+  ))}
+</select>
 
-      <label>Sort By</label>
-      <select onChange={(e) => setSortOrder(e.target.value)}>
-        <option value="NEWEST">Newest First</option>
-        <option value="OLDEST">Oldest First</option>
-      </select>
+<label>Sort By</label>
+<select
+  value={sortOrder}
+  onChange={(e) => setSortOrder(e.target.value)}
+>
+  <option value="NEWEST">Newest First</option>
+  <option value="OLDEST">Oldest First</option>
+</select>
     </div>
   )}
 </div>
@@ -266,6 +290,7 @@ function App() {
     notificationList={notificationList}
     markAsRead={markAsRead}
     currentPage = {activeView}
+    onLogout={handleLogout}
   />
   
           {activeView === "ALERTS" && (
@@ -297,13 +322,6 @@ function App() {
 
           {activeView === "DASHBOARD" && (
             <>
-              {/* <h2>Dashboard</h2>/ */}
-              <Dashboard
-                alerts={alerts}
-                notificationList={notificationList}
-                setNotificationList={setNotificationList}
-                onClick={markAsRead}
-              />
               {/* <h2>Dashboard</h2>/ */}
               <Dashboard
                 alerts={alerts}

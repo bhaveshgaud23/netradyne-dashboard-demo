@@ -1,29 +1,12 @@
 import { useState } from "react";
-import ImpactDirectionChart from "./Charts/Maintenance/ImpactDirectionChart";
-import VehicleStressScore from "./Charts/Maintenance/VehicleStressScore";
-import DriverRiskLeaderboard from "./Charts/OHS/DriverRiskLeaderboard";
-import CriticalAlertsByDriver from "./Charts/OHS/CriticalAlertsByDriver";
-import DriverMonitoringDashboard from "./Charts/OHS/DriverMonitoringDashboard";
-import SpeedDistributionHistogram from "./Charts/OHS/SpeedDistributionHistogram";
-import DurationVsSeverity from "./Charts/OHS/DurationVsSeverity";
-import LiveAlertStream from "./Charts/CommandCenter/LiveAlertStream";
-import SeverityMap from "./Charts/CommandCenter/SeverityMap";
-import AlertStatusBreakdown from "./Charts/CommandCenter/AlertStatusBreakdown";
-import AlertTypeRealTimePie from "./Charts/CommandCenter/AlertTypeRealTimePie";
-import AlertDetailPanel from "./Charts/CommandCenter/AlertDetailPanel";
+
 
 import MapView from "./MapView";
 import SeverityBarChart from "./SeverityBarChart";
 import SpeedLineChart from "./SpeedLineChart";
 // import TopHeader from "./TopHeader";
-import RiskOverviewKPI from "./Charts/Authority/RiskOverviewKPI";
-import AlertsByCategoryStacked from "./Charts/Authority/AlertsByCategoryStacked";
-import CityRiskRanking from "./Charts/Authority/CityRiskRanking";
-import CriticalAlertsTrend from "./Charts/Authority/CriticalAlertsTrend";
-import GeoHeatmap from "./Charts/Authority/GeoHeatmap";
-import WeatherImpactAnalysis from "./Charts/Authority/WeatherImpactAnalysis";
-import HighGForceScatter from "./Charts/Maintenance/HighGForceScatter";
-import VehiclesHighGEvents from "./Charts/Maintenance/VehiclesHighGEvents";
+
+import RoleBasedCharts from "./RoleBasedCharts";
 
 
 import { FaBell } from "react-icons/fa";
@@ -34,7 +17,7 @@ import { FaCheckCircle } from "react-icons/fa";
 
 function Dashboard({ alerts }) {
   const total = alerts.length;
-  console.log(alerts);
+  // console.log(alerts);
 
   const highSeverity = alerts.filter((a) => a.details?.severity === 3).length;
 
@@ -42,7 +25,11 @@ function Dashboard({ alerts }) {
 
   const lowSeverity = alerts.filter((a) => a.details?.severity <= 1).length;
   
+  const role = localStorage.getItem("role");
   const [selectedAlert, setSelectedAlert] = useState(null);
+
+  console.log(localStorage.getItem("role"));
+
 
   return (
     <>
@@ -91,35 +78,20 @@ function Dashboard({ alerts }) {
 
         {/* Charts Section */}
         {/* Charts Section */}
-      <div className="charts-container">
+        <div className="charts-container">
         <SeverityBarChart alerts={alerts} />
-        <SpeedLineChart alerts={alerts} />
-        <RiskOverviewKPI alerts={alerts} />
-        <AlertsByCategoryStacked alerts={alerts} />
-        <CityRiskRanking alerts={alerts} />
-        <CriticalAlertsTrend alerts={alerts} />
-        <GeoHeatmap alerts={alerts} />
-        <WeatherImpactAnalysis alerts={alerts} />
-        <HighGForceScatter alerts={alerts} />
-        <VehiclesHighGEvents alerts={alerts} />
-        <ImpactDirectionChart alerts={alerts} />
-        <VehicleStressScore alerts={alerts} />
-        <DriverRiskLeaderboard alerts={alerts} />
-        <CriticalAlertsByDriver alerts={alerts} />
-        <DriverMonitoringDashboard alerts={alerts} />
-        <SpeedDistributionHistogram alerts={alerts} />
-        <DurationVsSeverity alerts={alerts} />
-        <LiveAlertStream alerts={alerts} />
-        <SeverityMap alerts={alerts} onSelectAlert={setSelectedAlert} />
-        <AlertStatusBreakdown alerts={alerts} />
-        <AlertTypeRealTimePie alerts={alerts} />
-        <AlertDetailPanel
-          alert={selectedAlert}
-          onClose={() => setSelectedAlert(null)}
-        />
-      </div>
+         <SpeedLineChart alerts={alerts} />
+  <RoleBasedCharts
+    role={role}
+    alerts={alerts}
+    selectedAlert={selectedAlert}
+    setSelectedAlert={setSelectedAlert}
+  />
+</div>
+      <div className="dashboard-wrapper">
       <h2>Fleets on Map</h2>
       <MapView alerts={alerts} />
+      </div>
     </>
   );
 }

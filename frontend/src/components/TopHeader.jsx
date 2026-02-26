@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from "react";
 function TopHeader({
   notificationList,
   markAsRead,
-  currentPage
+  currentPage,
+  onLogout
 }) {
   const [showNotificationDropdown, setShowNotificationDropdown] =
     useState(false);
@@ -13,6 +14,8 @@ function TopHeader({
   const notificationRef = useRef(null);
   const profileRef = useRef(null);
 
+  const storedUsername = localStorage.getItem("username");
+   
   // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -98,14 +101,14 @@ function TopHeader({
               setShowProfileDropdown(!showProfileDropdown)
             }
           >
-            A
+           {storedUsername ? storedUsername.charAt(0).toUpperCase() : "?"}
           </div>
 
           {showProfileDropdown && (
             <div className="profile-dropdown">
               <div
                 className="profile-item"
-                onClick={() => alert("Logout Executed")}
+                onClick={onLogout}
               >
                 Logout
               </div>

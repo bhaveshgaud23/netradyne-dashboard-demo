@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState ,useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -10,13 +10,23 @@ import {
 } from "recharts";
 
 function SpeedLineChart({ alerts }) {
+
+  
   const [selectedVehicle, setSelectedVehicle] = useState("");
+
+ 
 
   // Get unique vehicles
   const vehicleList = useMemo(() => {
     return [...new Set(alerts.map(a => a.vehicle?.vehicleNumber))]
       .filter(Boolean);
   }, [alerts]);
+
+  useEffect(() => {
+    if (vehicleList.length > 0 && !selectedVehicle) {
+      setSelectedVehicle(vehicleList[0]);
+    }
+  }, [vehicleList, selectedVehicle]);
 
   // Filter alerts for selected vehicle
   const chartData = useMemo(() => {
@@ -35,6 +45,9 @@ function SpeedLineChart({ alerts }) {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
+
+      
+
   
       return (
         <div

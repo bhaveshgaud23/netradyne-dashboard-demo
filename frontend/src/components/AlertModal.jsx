@@ -1,3 +1,13 @@
+import {
+  FaExclamationTriangle,
+  FaCarCrash,
+  FaUserShield,
+  FaCarSide,
+  FaCogs,
+  FaStar,
+} from "react-icons/fa";
+
+
 const AlertModal = ({ alert, onClose }) => {
   if (!alert) return null;
 
@@ -6,11 +16,59 @@ const AlertModal = ({ alert, onClose }) => {
 
   const formatTime = (timestamp) => new Date(timestamp).toLocaleString();
 
+  const getSeverityClass = (severity, numericSeverity) => {
+    if (severity) {
+      switch (severity.toUpperCase()) {
+        case "ALERT":
+          return "critical";
+        case "WARN":
+        case "MODERATE":
+          return "warn";
+        default:
+          return "info";
+      }
+    }
+
+    if (numericSeverity === 1) return "critical";
+    if (numericSeverity === 2) return "warn";
+    return "info";
+  };
+  
+
+  const severityClass = getSeverityClass(
+    alert?.details?.severityDescription,
+    alert?.details?.severity
+  );
+
+  // 🔹 Icon selector based on category
+  const getCategoryIcon = (category) => {
+    switch (category?.toUpperCase()) {
+      case "SAFETY ALERT":
+        return <FaExclamationTriangle />;
+      case "COLLISION ALERT":
+        return <FaCarCrash />;
+      case "DRIVER MONITORING":
+        return <FaUserShield />;
+      case "DRIVING BEHAVIOR":
+        return <FaCarSide />;
+      case "SYSTEM ALERT":
+        return <FaCogs />;
+      case "DRIVER PERFORMANCE":
+        return <FaStar />;
+      default:
+        return <FaExclamationTriangle />;
+    }
+  };
+  
+
   return (
     <div style={overlayStyle}>
       <div style={modalStyle}>
         {/* HEADER */}
         <div style={{ marginBottom: "20px" }}>
+        <span className={`alert-icon ${severityClass} modalclass`}>
+            {getCategoryIcon(alert?.details?.categoryDescription)}
+          </span>
           <h2 style={{ margin: 0 }}>{alert.details.typeDescription}</h2>
           <p style={{ margin: "6px 0", color: "#666" }}>
             {alert.details.categoryDescription}

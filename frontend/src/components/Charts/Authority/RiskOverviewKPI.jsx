@@ -67,17 +67,17 @@ function RiskOverviewKPI({ alerts }) {
 
   return (
     <div className="authority-kpi-grid">
-      <div className="kpi-card">
+      {/* <div className="kpi-card">
         <h4>Total Alerts</h4>
         <h2>{metrics.total}</h2>
-      </div>
+      </div> */}
 
-      <div className="kpi-card critical">
+      {/* <div className="kpi-card critical">
         <h4>Critical Alerts</h4>
         <h2>
           {metrics.criticalCount} ({metrics.criticalPercentage}%)
         </h2>
-      </div>
+      </div> */}
 
       <div className="kpi-card">
         <h4>Top Risk City</h4>
